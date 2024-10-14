@@ -49,11 +49,11 @@
     <Compile Include="Class\Account.cs" />
     <Compile Include="Class\Admin.cs" />
     <Compile Include="Class\Craftsman.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Class\Item.cs" />
     <Compile Include="Class\Product.cs" />
@@ -62,8 +62,8 @@
     <Compile Include="Class\Transaction.cs" />
     <Compile Include="Class\User.cs" />
     <Compile Include="Class\Voucher.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

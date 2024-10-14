@@ -1,23 +1,33 @@
 ﻿using System;
 
-namespace ClothCycles
+public class Voucher
 {
-    internal class Voucher
+    public int VoucherID { get; set; }
+    public double Value { get; set; }
+    public DateTime ExpiryDate { get; set; }
+    public bool IsActive { get; set; }
+    public User OwnedBy { get; set; }
+
+    public Voucher(int voucherID, double value, DateTime expiryDate, User ownedBy)
     {
-        public string VoucherID { get; set; }
-        public double Value { get; set; }
-        public DateTime ExpiryDate { get; set; }
+        VoucherID = voucherID;
+        Value = value;
+        ExpiryDate = expiryDate;
+        IsActive = true;
+        OwnedBy = ownedBy;
+    }
 
-        public Voucher(string id, double value, DateTime expiry)
+    // Redeem the voucher
+    public void Redeem()
+    {
+        if (IsActive && DateTime.Now < ExpiryDate)
         {
-            VoucherID = id;
-            Value = value;
-            ExpiryDate = expiry;
+            IsActive = false;
+            Console.WriteLine($"Voucher {VoucherID} redeemed by {OwnedBy.Username}");
         }
-
-        public bool IsValid()
+        else
         {
-            return ExpiryDate > DateTime.Now;
+            Console.WriteLine("Voucher is expired or inactive.");
         }
     }
 }

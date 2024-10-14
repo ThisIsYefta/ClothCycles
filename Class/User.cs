@@ -1,55 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System;
 
-namespace ClothCycles
+public class User : Account
 {
-    internal class User : Account
+    public int UserID { get; set; }
+    public string Name { get; set; }
+    public int Points { get; set; }
+    public List<string> ScannedItems { get; set; }
+
+    public User(int userID, string username, string email, string password, string name)
+        : base(username, email, password)
     {
-        public string UserID { get; set; }
-        public string Name { get; set; }
-        public int Points { get; set; }
-        public List<Item> ScannedItems { get; set; }
+        UserID = userID;
+        Name = name;
+        Points = 0;
+        ScannedItems = new List<string>();
+    }
 
-        public User()
-        {
-            ScannedItems = new List<Item>();
-            Points = 0;
-        }
+    // Method to add points
+    public void AddPoints(int points)
+    {
+        Points += points;
+        Console.WriteLine($"{points} points added to {Name}. Total: {Points}");
+    }
 
-        public void ScanItem(Item item)
-        {
-            // Logic to scan item
-            Console.WriteLine($"{Name} scanned item: {item.GetDetails()}");
-            ScannedItems.Add(item);
-        }
-
-        public void UploadItem(Item item)
-        {
-            ScannedItems.Add(item);
-            Console.WriteLine($"{Name} uploaded an item: {item.GetDetails()}");
-        }
-
-        public List<Product> ViewProducts(List<Product> availableProducts)
-        {
-            return availableProducts;
-        }
-
-        public void EarnPoints(int points)
-        {
-            Points += points;
-            Console.WriteLine($"{Name} earned {points} points. Total points: {Points}");
-        }
-
-        public bool RedeemVoucher(Voucher voucher)
-        {
-            if (Points >= voucher.Value && voucher.ExpiryDate > DateTime.Now)
-            {
-                Points -= (int)voucher.Value;
-                Console.WriteLine($"{Name} redeemed voucher {voucher.VoucherID} for {voucher.Value} points.");
-                return true;
-            }
-            Console.WriteLine("Voucher redemption failed.");
-            return false;
-        }
+    // Method to scan items
+    public void ScanItem(string item)
+    {
+        ScannedItems.Add(item);
+        Console.WriteLine($"{item} scanned by {Name}");
     }
 }

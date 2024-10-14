@@ -1,25 +1,28 @@
 ﻿using System;
 
-namespace ClothCycles
+public class Product
 {
-    internal class Product
+    public int ProductID { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public double Price { get; set; }
+    public bool Availability { get; set; }
+    public Craftsman PostedBy { get; set; }
+
+    public Product(int productID, string name, string description, double price, Craftsman postedBy)
     {
-        public string ProductID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public double Price { get; set; }
-        public Craftsman PostedBy { get; set; }
-        public bool IsAvailable { get; set; }
+        ProductID = productID;
+        Name = name;
+        Description = description;
+        Price = price;
+        Availability = true;
+        PostedBy = postedBy;
+    }
 
-        public string GetDetails()
-        {
-            return $"Product: {Name}, Price: {Price}, Posted by: {PostedBy.Username}";
-        }
-
-        public void UpdateAvailability(bool status)
-        {
-            IsAvailable = status;
-            Console.WriteLine($"Product {ProductID} availability updated to {IsAvailable}");
-        }
+    // Mark the product as unavailable
+    public void MarkAsSold()
+    {
+        Availability = false;
+        Console.WriteLine($"{Name} marked as sold by {PostedBy.Username}");
     }
 }

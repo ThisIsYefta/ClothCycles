@@ -1,32 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System;
 
-namespace ClothCycles
+public class Craftsman : Account
 {
-    internal class Craftsman : Account
+    public int CraftsmanID { get; set; }
+    public List<string> PostedProducts { get; set; }
+    public int EarnedPoints { get; set; }
+
+    public Craftsman(int craftsmanID, string username, string email, string password)
+        : base(username, email, password)
     {
-        public string CraftsmanID { get; set; }
-        public List<Product> PostedProducts { get; set; }
+        CraftsmanID = craftsmanID;
+        PostedProducts = new List<string>();
+        EarnedPoints = 0;
+    }
 
-        public Craftsman()
-        {
-            PostedProducts = new List<Product>();
-        }
+    // Method to post a product
+    public void PostProduct(string product)
+    {
+        PostedProducts.Add(product);
+        Console.WriteLine($"{product} posted by Craftsman {Username}");
+    }
 
-        public void ExpressInterest(Item item)
-        {
-            Console.WriteLine($"Craftsman {Username} expressed interest in item {item.ItemID}");
-        }
-
-        public void PostProduct(Product product)
-        {
-            PostedProducts.Add(product);
-            Console.WriteLine($"Craftsman {Username} posted a product: {product.GetDetails()}");
-        }
-
-        public List<Item> ViewAvailableItems(List<Item> allItems)
-        {
-            return allItems; // Filter items as needed
-        }
+    // Method to add earned points
+    public void AddEarnedPoints(int points)
+    {
+        EarnedPoints += points;
+        Console.WriteLine($"{points} points earned by {Username}. Total: {EarnedPoints}");
     }
 }

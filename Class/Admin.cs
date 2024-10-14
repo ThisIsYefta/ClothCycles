@@ -1,28 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace ClothCycles
+public class Admin : Account
 {
-    internal class Admin : Account
+    public int AdminID { get; set; }
+
+    public Admin(int adminID, string username, string email, string password)
+        : base(username, email, password)
     {
-        public string AdminID { get; set; }
+        AdminID = adminID;
+    }
 
-        public void ManageUsers(List<User> users)
-        {
-            foreach (var user in users)
-            {
-                Console.WriteLine($"Admin {Username} is managing user {user.UserID}");
-            }
-        }
-
-        public void MonitorActivities()
-        {
-            Console.WriteLine($"Admin {Username} is monitoring activities.");
-        }
-
-        public void SystemMaintenance()
-        {
-            Console.WriteLine($"Admin {Username} is performing system maintenance.");
-        }
+    // Admin-specific logic: approving users
+    public void ApproveUser(User user)
+    {
+        Console.WriteLine($"User {user.Username} has been approved by Admin {Username}");
     }
 }

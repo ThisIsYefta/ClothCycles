@@ -1,20 +1,33 @@
 ﻿using System;
 
-namespace ClothCycles
+public class Transaction
 {
-    internal class Transaction
-    {
-        public string TransactionID { get; set; }
-        public Item Item { get; set; }
-        public Craftsman Craftsman { get; set; }
-        public int PointsAwarded { get; set; }
-        public DateTime TransactionDate { get; set; }
+    public int TransactionID { get; set; }
+    public Item Item { get; set; }
+    public Craftsman Craftsman { get; set; }
+    public int PointsAwarded { get; set; }
+    public DateTime Date { get; set; }
+    public Voucher VoucherUsed { get; set; }
 
-        public void ProcessTransaction(User user, int points)
+    public Transaction(int transactionID, Item item, Craftsman craftsman, int pointsAwarded, Voucher voucherUsed)
+    {
+        TransactionID = transactionID;
+        Item = item;
+        Craftsman = craftsman;
+        PointsAwarded = pointsAwarded;
+        VoucherUsed = voucherUsed;
+        Date = DateTime.Now;
+    }
+
+    // Process the transaction
+    public void ProcessTransaction()
+    {
+        Item.ChangeStatus("sold");
+        Craftsman.AddEarnedPoints(PointsAwarded);
+        if (VoucherUsed != null)
         {
-            user.EarnPoints(points);
-            TransactionDate = DateTime.Now;
-            Console.WriteLine($"Transaction {TransactionID} completed. {points} points awarded.");
+            VoucherUsed.Redeem();
         }
+        Console.WriteLine($"Transaction {TransactionID} processed on {Date}");
     }
 }

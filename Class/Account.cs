@@ -1,24 +1,22 @@
 ﻿using System;
 
-namespace ClothCycles
+public class Account
 {
-    internal class Account
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
+
+    public Account(string username, string email, string password)
     {
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
+        this.Username = username;
+        this.Email = email;
+        this.Password = password;
+    }
 
-        public virtual bool Login(string username, string password)
-        {
-            return username == this.Username && password == this.Password;
-        }
-
-        public virtual bool Register(string username, string email, string password)
-        {
-            this.Username = username;
-            this.Email = email;
-            this.Password = password;
-            return true;
-        }
+    // Simulate changing the password
+    public void ChangePassword(string newPassword)
+    {
+        Password = newPassword;
+        Console.WriteLine($"Password for {Username} has been changed.");
     }
 }
