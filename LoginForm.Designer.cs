@@ -69,6 +69,7 @@
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(141, 22);
             this.txtPassword.TabIndex = 3;
+            this.txtPassword.UseSystemPasswordChar = true;
             // 
             // button1
             // 
@@ -102,7 +103,7 @@
             this.Controls.Add(this.txtUsername);
             this.Controls.Add(this.label1);
             this.Name = "LoginForm";
-            this.Text = "Form1";
+            this.Text = "LoginForm";
             this.ResumeLayout(false);
             this.PerformLayout();
 

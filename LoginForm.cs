@@ -21,15 +21,15 @@ namespace ClothCycles
         private void InitDummyData()
         {
             // Adjusting according to required constructor arguments
-            accounts.Add(new Account("john_doe", "john@example.com", "password123"));
-            accounts.Add(new Account("craftman123", "craftman@example.com", "craftmanpwd"));
+            accounts.Add(new Account("john_doe", "john@example.com", "12345678"));
+            accounts.Add(new Account("alexander", "craftman@example.com", "87654321"));
             accounts.Add(new Account("admin1", "admin@example.com", "adminpass"));
 
             // Assuming User, Craftsman, and Admin constructors require specific parameters
-            users.Add(new User(1, "john_doe", "John Doe", "password123", "John"));
-            craftsmen.Add(new Craftsman(1, "craftman123", "craftmanpwd", "Craftsman1"));
+            users.Add(new User(1, "john_doe", "John Doe", "12345678", "John"));
+            craftsmen.Add(new Craftsman(1, "alexander", "87654321", "Alexander (Craftsman)"));
             admins.Add(new Admin(1, "admin1", "admin@example.com", "adminpass")); 
-        }1
+        }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
