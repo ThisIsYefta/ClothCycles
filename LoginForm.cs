@@ -79,5 +79,15 @@ namespace ClothCycles
             // Call your existing login method here
             btnLogin_Click(sender, e);
         }
+
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
