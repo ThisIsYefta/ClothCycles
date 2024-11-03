@@ -7,8 +7,8 @@ public class Admin : Account
     {
     }
 
-    public override void DisplayRoleMessage()
+    public override string DisplayRoleMessage()
     {
-        Console.WriteLine("Welcome, Admin! You have administrative privileges.");
+        return "Welcome, Admin! You have administrative privileges.";
     }
 }

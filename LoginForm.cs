@@ -8,10 +8,21 @@ namespace ClothCycles
     public partial class LoginForm : Form
     {
         private string connString = "Host=localhost;Port=5432;Username=postgres;Password=Yefta21n0404;Database=ClothCycles";
+        private Timer errorTimer;
+
 
         public LoginForm()
         {
             InitializeComponent();
+            errorTimer = new Timer();
+            errorTimer.Interval = 3000; // 3000 ms = 3 detik
+            errorTimer.Tick += ErrorTimer_Tick;
+        }
+
+        private void ErrorTimer_Tick(object sender, EventArgs e)
+        {
+            lblErrorMessage.Visible = false; // Sembunyikan pesan error
+            errorTimer.Stop(); // Hentikan timer
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -41,6 +52,7 @@ namespace ClothCycles
 
                             if (password == enteredPassword) // Validate password
                             {
+                                // Buat objek sesuai role
                                 switch (role)
                                 {
                                     case "user":
@@ -58,26 +70,28 @@ namespace ClothCycles
                                         return;
                                 }
 
-                                account.DisplayRoleMessage();
-                                MessageBox.Show($"Login berhasil sebagai {role}", "Sukses");
+                                // Tampilkan pesan selamat datang di pop-up window
+                                MessageBox.Show(account.DisplayRoleMessage(), "Login Berhasil");
                             }
-                            else
+                            if (password != enteredPassword)
                             {
                                 lblErrorMessage.Text = "Password salah.";
                                 lblErrorMessage.Visible = true;
+                                errorTimer.Start(); // Mulai timer untuk menyembunyikan pesan
                             }
                         }
                         else
                         {
                             lblErrorMessage.Text = "Username tidak ditemukan.";
                             lblErrorMessage.Visible = true;
+                            errorTimer.Start(); // Mulai timer untuk menyembunyikan pesan
                         }
                     }
                 }
             }
         }
 
-        private void label1_Click(object sender, EventArgs e)
+                private void label1_Click(object sender, EventArgs e)
         {
             // You can leave this empty or add functionality if needed
         }

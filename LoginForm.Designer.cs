@@ -36,6 +36,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.lblErrorMessage = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lblWelcomeMessage = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -115,12 +116,24 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
+            // lblWelcomeMessage
+            // 
+            this.lblWelcomeMessage.AutoSize = true;
+            this.lblWelcomeMessage.Location = new System.Drawing.Point(355, 405);
+            this.lblWelcomeMessage.Name = "lblWelcomeMessage";
+            this.lblWelcomeMessage.Size = new System.Drawing.Size(44, 16);
+            this.lblWelcomeMessage.TabIndex = 7;
+            this.lblWelcomeMessage.Text = "label3";
+            this.lblWelcomeMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblWelcomeMessage.Visible = false;
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(874, 578);
+            this.Controls.Add(this.lblWelcomeMessage);
             this.Controls.Add(this.lblErrorMessage);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.txtPassword);
@@ -146,6 +159,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label lblErrorMessage;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lblWelcomeMessage;
     }
 }
 

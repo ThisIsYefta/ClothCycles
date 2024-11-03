@@ -17,9 +17,9 @@ public class Account
         Role = role;
     }
 
-    public virtual void DisplayRoleMessage()
+    public virtual string DisplayRoleMessage()
     {
-        Console.WriteLine($"Welcome, {Role}!");
+        return $"Welcome, {Role}!";
     }
 
     // Method to check if the entered password matches

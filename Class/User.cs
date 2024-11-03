@@ -11,8 +11,8 @@ public class User : Account
         Points = points;
     }
 
-    public override void DisplayRoleMessage()
+    public override string DisplayRoleMessage()
     {
-        Console.WriteLine("Welcome, User! You can view and manage your points.");
+        return "Welcome, User! You can view and manage your points.";
     }
 }

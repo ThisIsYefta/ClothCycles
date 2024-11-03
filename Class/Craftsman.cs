@@ -11,9 +11,9 @@ public class Craftsman : Account
         EarnedPoints = earnedPoints;
     }
 
-    public override void DisplayRoleMessage()
+    public override string DisplayRoleMessage()
     {
-        Console.WriteLine("Welcome, Craftsman! You can view and manage earned points.");
+        return "Welcome, Craftsman! You can view and manage earned points.";
     }
 
 }
