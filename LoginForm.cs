@@ -22,39 +22,56 @@ namespace ClothCycles
             using (NpgsqlConnection conn = new NpgsqlConnection(connString))
             {
                 conn.Open();
-                string query = "SELECT role FROM Account WHERE username = @username AND password = @password";
+                string query = "SELECT id, username, email, password, role FROM Account WHERE username = @username";
                 using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("username", enteredUsername);
-                    cmd.Parameters.AddWithValue("password", enteredPassword);
 
-                    var role = cmd.ExecuteScalar() as string;
-
-                    if (role != null)
+                    using (NpgsqlDataReader reader = cmd.ExecuteReader())
                     {
-                        MessageBox.Show($"Login berhasil sebagai {role}", "Sukses");
+                        if (reader.Read())
+                        {
+                            int id = reader.GetInt32(0);
+                            string username = reader.GetString(1);
+                            string email = reader.GetString(2);
+                            string password = reader.GetString(3);
+                            string role = reader.GetString(4);
 
-                        // Tampilkan pop-up sesuai peran
-                        if (role == "user")
-                        {
-                            // Arahkan ke form pengguna
-                            MessageBox.Show("Selamat datang, User!");
+                            Account account;
+
+                            if (password == enteredPassword) // Validate password
+                            {
+                                switch (role)
+                                {
+                                    case "user":
+                                        account = new User(id, username, email, password, 0); // Assume points = 0 initially
+                                        break;
+                                    case "craftsman":
+                                        account = new Craftsman(id, username, email, password, 0); // Assume earnedPoints = 0
+                                        break;
+                                    case "admin":
+                                        account = new Admin(id, username, email, password);
+                                        break;
+                                    default:
+                                        lblErrorMessage.Text = "Invalid role.";
+                                        lblErrorMessage.Visible = true;
+                                        return;
+                                }
+
+                                account.DisplayRoleMessage();
+                                MessageBox.Show($"Login berhasil sebagai {role}", "Sukses");
+                            }
+                            else
+                            {
+                                lblErrorMessage.Text = "Password salah.";
+                                lblErrorMessage.Visible = true;
+                            }
                         }
-                        else if (role == "craftsman")
+                        else
                         {
-                            // Arahkan ke form craftsman
-                            MessageBox.Show("Selamat datang, Craftsman!");
+                            lblErrorMessage.Text = "Username tidak ditemukan.";
+                            lblErrorMessage.Visible = true;
                         }
-                        else if (role == "admin")
-                        {
-                            // Arahkan ke dashboard admin
-                            MessageBox.Show("Selamat datang, Admin!");
-                        }
-                    }
-                    else
-                    {
-                        lblErrorMessage.Text = "Username atau password salah.";
-                        lblErrorMessage.Visible = true;
                     }
                 }
             }

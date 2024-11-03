@@ -2,17 +2,13 @@
 
 public class Admin : Account
 {
-    public int AdminID { get; set; }
-
-    public Admin(int adminID, string username, string email, string password)
-        : base(username, email, password)
+    public Admin(int id, string username, string email, string password)
+        : base(id, username, email, password, "admin")
     {
-        AdminID = adminID;
     }
 
-    // Admin-specific logic: approving users
-    public void ApproveUser(User user)
+    public override void DisplayRoleMessage()
     {
-        Console.WriteLine($"User {user.Username} has been approved by Admin {Username}");
+        Console.WriteLine("Welcome, Admin! You have administrative privileges.");
     }
 }

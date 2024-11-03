@@ -3,31 +3,16 @@ using System;
 
 public class User : Account
 {
-    public int UserID { get; set; }
-    public string Name { get; set; }
-    public int Points { get; set; }
-    public List<string> ScannedItems { get; set; }
+    public int Points { get; private set; }
 
-    public User(int userID, string username, string email, string password, string name)
-        : base(username, email, password)
+    public User(int id, string username, string email, string password, int points)
+        : base(id, username, email, password, "user")
     {
-        UserID = userID;
-        Name = name;
-        Points = 0;
-        ScannedItems = new List<string>();
+        Points = points;
     }
 
-    // Method to add points
-    public void AddPoints(int points)
+    public override void DisplayRoleMessage()
     {
-        Points += points;
-        Console.WriteLine($"{points} points added to {Name}. Total: {Points}");
-    }
-
-    // Method to scan items
-    public void ScanItem(string item)
-    {
-        ScannedItems.Add(item);
-        Console.WriteLine($"{item} scanned by {Name}");
+        Console.WriteLine("Welcome, User! You can view and manage your points.");
     }
 }

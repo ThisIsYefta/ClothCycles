@@ -2,21 +2,29 @@
 
 public class Account
 {
-    public string Username { get; set; }
-    public string Email { get; set; }
-    public string Password { get; set; }
+    protected int Id { get; set; }
+    public string Username { get; private set; }
+    public string Email { get; private set; }
+    private string Password { get; set; }
+    public string Role { get; private set; }
 
-    public Account(string username, string email, string password)
+    public Account(int id, string username, string email, string password, string role)
     {
-        this.Username = username;
-        this.Email = email;
-        this.Password = password;
+        Id = id;
+        Username = username;
+        Email = email;
+        Password = password;
+        Role = role;
     }
 
-    // Simulate changing the password
-    public void ChangePassword(string newPassword)
+    public virtual void DisplayRoleMessage()
     {
-        Password = newPassword;
-        Console.WriteLine($"Password for {Username} has been changed.");
+        Console.WriteLine($"Welcome, {Role}!");
+    }
+
+    // Method to check if the entered password matches
+    public bool ValidatePassword(string inputPassword)
+    {
+        return Password == inputPassword;
     }
 }

@@ -19,15 +19,4 @@ public class Transaction
         Date = DateTime.Now;
     }
 
-    // Process the transaction
-    public void ProcessTransaction()
-    {
-        Item.ChangeStatus("sold");
-        Craftsman.AddEarnedPoints(PointsAwarded);
-        if (VoucherUsed != null)
-        {
-            VoucherUsed.Redeem();
-        }
-        Console.WriteLine($"Transaction {TransactionID} processed on {Date}");
-    }
 }
