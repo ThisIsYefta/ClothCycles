@@ -1,34 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Npgsql;
 
 namespace ClothCycles
 {
     public partial class LoginForm : Form
     {
-        // Dummy data for testing login
-        List<Account> accounts = new List<Account>();
-        List<User> users = new List<User>();
-        List<Craftsman> craftsmen = new List<Craftsman>();
-        List<Admin> admins = new List<Admin>();
+        private string connString = "Host=localhost;Port=5432;Username=postgres;Password=Yefta21n0404;Database=ClothCycles";
 
         public LoginForm()
         {
             InitializeComponent();
-            InitDummyData();
-        }
-
-        private void InitDummyData()
-        {
-            // Adjusting according to required constructor arguments
-            accounts.Add(new Account("john_doe", "john@example.com", "12345678"));
-            accounts.Add(new Account("alexander", "craftman@example.com", "87654321"));
-            accounts.Add(new Account("admin1", "admin@example.com", "adminpass"));
-
-            // Assuming User, Craftsman, and Admin constructors require specific parameters
-            users.Add(new User(1, "john_doe", "John Doe", "12345678", "John"));
-            craftsmen.Add(new Craftsman(1, "alexander", "87654321", "Alexander (Craftsman)"));
-            admins.Add(new Admin(1, "admin1", "admin@example.com", "adminpass")); 
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -36,36 +19,44 @@ namespace ClothCycles
             string enteredUsername = txtUsername.Text.Trim();
             string enteredPassword = txtPassword.Text.Trim();
 
-            // Validate login credentials
-            Account matchingAccount = accounts.Find(acc => acc.Username == enteredUsername && acc.Password == enteredPassword);
+            using (NpgsqlConnection conn = new NpgsqlConnection(connString))
+            {
+                conn.Open();
+                string query = "SELECT role FROM Account WHERE username = @username AND password = @password";
+                using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("username", enteredUsername);
+                    cmd.Parameters.AddWithValue("password", enteredPassword);
 
-            if (matchingAccount != null)
-            {
-                // Check if the user is a regular user, craftsman, or admin and redirect accordingly
-                if (users.Exists(u => u.Username == enteredUsername))
-                {
-                    User loggedInUser = users.Find(u => u.Username == enteredUsername);
-                    MessageBox.Show($"Welcome, {loggedInUser.Name}!\nYou have {loggedInUser.Points} points.", "User Login Success");
-                    // Optionally, open the main user form here
+                    var role = cmd.ExecuteScalar() as string;
+
+                    if (role != null)
+                    {
+                        MessageBox.Show($"Login berhasil sebagai {role}", "Sukses");
+
+                        // Tampilkan pop-up sesuai peran
+                        if (role == "user")
+                        {
+                            // Arahkan ke form pengguna
+                            MessageBox.Show("Selamat datang, User!");
+                        }
+                        else if (role == "craftsman")
+                        {
+                            // Arahkan ke form craftsman
+                            MessageBox.Show("Selamat datang, Craftsman!");
+                        }
+                        else if (role == "admin")
+                        {
+                            // Arahkan ke dashboard admin
+                            MessageBox.Show("Selamat datang, Admin!");
+                        }
+                    }
+                    else
+                    {
+                        lblErrorMessage.Text = "Username atau password salah.";
+                        lblErrorMessage.Visible = true;
+                    }
                 }
-                else if (craftsmen.Exists(c => c.Username == enteredUsername))
-                {
-                    Craftsman loggedInCraftsman = craftsmen.Find(c => c.Username == enteredUsername);
-                    MessageBox.Show($"Welcome, {loggedInCraftsman.Username}!\nYou have earned {loggedInCraftsman.EarnedPoints} points.", "Craftsman Login Success");
-                    // Optionally, open the craftsman form here
-                }
-                else if (admins.Exists(a => a.Username == enteredUsername))
-                {
-                    Admin loggedInAdmin = admins.Find(a => a.Username == enteredUsername);
-                    MessageBox.Show($"Welcome, Admin {loggedInAdmin.Username}!", "Admin Login Success");
-                    // Optionally, open the admin dashboard form here
-                }
-            }
-            else
-            {
-                // Invalid login credentials
-                lblErrorMessage.Text = "Invalid username or password. Please try again.";
-                lblErrorMessage.Visible = true;
             }
         }
 
