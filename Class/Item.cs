@@ -5,24 +5,17 @@ public class Item
     public int ItemID { get; set; }
     public string MaterialType { get; set; }
     public string Model { get; set; }
-    public string Condition { get; set; }
-    public string Status { get; set; }
-    public User Owner { get; set; }
+    public string Description { get; set; }
+    public int Quantity { get; set; }
+    public User User { get; set; }
 
-    public Item(int itemID, string materialType, string model, string condition, User owner)
+    public Item(int itemId, string materialType, string model, string description, int quantity, User user)
     {
-        ItemID = itemID;
+        ItemID = itemId;
         MaterialType = materialType;
         Model = model;
-        Condition = condition;
-        Status = "available";
-        Owner = owner;
-    }
-
-    // Method to change item status
-    public void ChangeStatus(string newStatus)
-    {
-        Status = newStatus;
-        Console.WriteLine($"Item {ItemID} status changed to {newStatus}");
+        Description = description;
+        Quantity = quantity;
+        User = user;
     }
 }

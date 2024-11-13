@@ -6,7 +6,7 @@ namespace ClothCycles
 {
     public partial class SignUpForm : Form
     {
-        private string connString = "Host=localhost;Port=5432;Username=postgres;Password=Yefta21n0404;Database=ClothCycles2";
+        private string connString = "Host=localhost;Port=5432;Username=postgres;Password=Yefta21n0404;Database=ClothCycles";
 
         public SignUpForm()
         {
@@ -28,10 +28,10 @@ namespace ClothCycles
             string username = txtUsername.Text.Trim();
             string email = txtEmail.Text.Trim();
             string password = txtPassword.Text.Trim();
-            string name = txtName.Text.Trim(); // Hanya untuk user
+            string name = txtName.Text.Trim(); // Ambil nama dari TextBox
             string role = cmbRole.SelectedItem.ToString(); // Ambil role dari ComboBox
 
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(name))
             {
                 MessageBox.Show("Semua field harus diisi.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -56,7 +56,7 @@ namespace ClothCycles
                 }
 
                 // Simpan data baru ke tabel Account
-                string insertAccountQuery = "INSERT INTO Account (username, email, password, role) VALUES (@username, @email, @password, @role) RETURNING id";
+                string insertAccountQuery = "INSERT INTO Account (username, email, password, role, name) VALUES (@username, @email, @password, @role, @name) RETURNING id";
                 int accountId;
 
                 using (NpgsqlCommand insertAccountCmd = new NpgsqlCommand(insertAccountQuery, conn))
@@ -65,6 +65,7 @@ namespace ClothCycles
                     insertAccountCmd.Parameters.AddWithValue("email", email);
                     insertAccountCmd.Parameters.AddWithValue("password", password); // Pertimbangkan hashing password sebelum disimpan
                     insertAccountCmd.Parameters.AddWithValue("role", role); // Menggunakan role dari ComboBox
+                    insertAccountCmd.Parameters.AddWithValue("name", name); // Menyimpan nama ke kolom 'name'
 
                     accountId = Convert.ToInt32(insertAccountCmd.ExecuteScalar());
                 }
@@ -72,11 +73,10 @@ namespace ClothCycles
                 // Simpan data tambahan berdasarkan role
                 if (role == "user" || role == "craftsman")
                 {
-                    string insertUserQuery = $"INSERT INTO {role}s (accountid, name, points) VALUES (@accountid, @name, @points)";
+                    string insertUserQuery = $"INSERT INTO {role}s (accountid, points) VALUES (@accountid, @points)";
                     using (NpgsqlCommand insertUserCmd = new NpgsqlCommand(insertUserQuery, conn))
                     {
                         insertUserCmd.Parameters.AddWithValue("accountid", accountId);
-                        insertUserCmd.Parameters.AddWithValue("name", name);
                         insertUserCmd.Parameters.AddWithValue("points", 0); // Default points adalah 0
 
                         insertUserCmd.ExecuteNonQuery();
@@ -85,16 +85,16 @@ namespace ClothCycles
                 else if (role == "admin")
                 {
                     // Simpan data untuk admin
-                    string insertAdminQuery = "INSERT INTO Admins (accountid, name) VALUES (@accountid, @name)";
+                    string insertAdminQuery = "INSERT INTO Admins (accountid) VALUES (@accountid)";
                     using (NpgsqlCommand insertAdminCmd = new NpgsqlCommand(insertAdminQuery, conn))
                     {
                         insertAdminCmd.Parameters.AddWithValue("accountid", accountId);
-                        insertAdminCmd.Parameters.AddWithValue("name", name); // Anda bisa menyesuaikan jika ada kolom lain yang diperlukan
 
                         insertAdminCmd.ExecuteNonQuery();
                     }
                 }
             }
+
             MessageBox.Show("Registrasi berhasil! Anda dapat login sekarang.", "Sign Up Berhasil");
             this.Close(); // Menutup form setelah registrasi berhasil
         }
