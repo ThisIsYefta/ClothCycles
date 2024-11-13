@@ -34,11 +34,17 @@
             this.txtQuantity = new System.Windows.Forms.TextBox();
             this.btnPostItem = new System.Windows.Forms.Button();
             this.btnGoToTransactions = new System.Windows.Forms.Button();
-            this.listViewItems = new System.Windows.Forms.ListView();
             this.lblNamaItem = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.dataGridViewItems = new System.Windows.Forms.DataGridView();
+            this.Model = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MaterialType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Deskripsi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Kuantitas = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Username = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewItems)).BeginInit();
             this.SuspendLayout();
             // 
             // cmbMaterialType
@@ -72,7 +78,7 @@
             // 
             // btnPostItem
             // 
-            this.btnPostItem.Location = new System.Drawing.Point(39, 356);
+            this.btnPostItem.Location = new System.Drawing.Point(51, 356);
             this.btnPostItem.Name = "btnPostItem";
             this.btnPostItem.Size = new System.Drawing.Size(91, 37);
             this.btnPostItem.TabIndex = 4;
@@ -88,15 +94,6 @@
             this.btnGoToTransactions.TabIndex = 5;
             this.btnGoToTransactions.Text = "Go To Transactions";
             this.btnGoToTransactions.UseVisualStyleBackColor = true;
-            // 
-            // listViewItems
-            // 
-            this.listViewItems.HideSelection = false;
-            this.listViewItems.Location = new System.Drawing.Point(282, 69);
-            this.listViewItems.Name = "listViewItems";
-            this.listViewItems.Size = new System.Drawing.Size(477, 337);
-            this.listViewItems.TabIndex = 6;
-            this.listViewItems.UseCompatibleStateImageBehavior = false;
             // 
             // lblNamaItem
             // 
@@ -134,16 +131,67 @@
             this.label3.TabIndex = 10;
             this.label3.Text = "Quantity :";
             // 
+            // dataGridViewItems
+            // 
+            this.dataGridViewItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Model,
+            this.MaterialType,
+            this.Deskripsi,
+            this.Kuantitas,
+            this.Username});
+            this.dataGridViewItems.Location = new System.Drawing.Point(263, 148);
+            this.dataGridViewItems.Name = "dataGridViewItems";
+            this.dataGridViewItems.RowHeadersWidth = 51;
+            this.dataGridViewItems.RowTemplate.Height = 24;
+            this.dataGridViewItems.Size = new System.Drawing.Size(533, 310);
+            this.dataGridViewItems.TabIndex = 11;
+            // 
+            // Model
+            // 
+            this.Model.HeaderText = "Model";
+            this.Model.MinimumWidth = 6;
+            this.Model.Name = "Model";
+            this.Model.Width = 125;
+            // 
+            // MaterialType
+            // 
+            this.MaterialType.HeaderText = "MaterialType";
+            this.MaterialType.MinimumWidth = 6;
+            this.MaterialType.Name = "MaterialType";
+            this.MaterialType.Width = 125;
+            // 
+            // Deskripsi
+            // 
+            this.Deskripsi.HeaderText = "Deskripsi";
+            this.Deskripsi.MinimumWidth = 6;
+            this.Deskripsi.Name = "Deskripsi";
+            this.Deskripsi.Width = 125;
+            // 
+            // Kuantitas
+            // 
+            this.Kuantitas.HeaderText = "Kuantitas";
+            this.Kuantitas.MinimumWidth = 6;
+            this.Kuantitas.Name = "Kuantitas";
+            this.Kuantitas.Width = 125;
+            // 
+            // Username
+            // 
+            this.Username.HeaderText = "Username";
+            this.Username.MinimumWidth = 6;
+            this.Username.Name = "Username";
+            this.Username.Width = 125;
+            // 
             // UsersForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(823, 503);
+            this.Controls.Add(this.dataGridViewItems);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblNamaItem);
-            this.Controls.Add(this.listViewItems);
             this.Controls.Add(this.btnGoToTransactions);
             this.Controls.Add(this.btnPostItem);
             this.Controls.Add(this.txtQuantity);
@@ -153,6 +201,7 @@
             this.Name = "UsersForm";
             this.Text = "UsersForm";
             this.Load += new System.EventHandler(this.UsersForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewItems)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -166,10 +215,15 @@
         private System.Windows.Forms.TextBox txtQuantity;
         private System.Windows.Forms.Button btnPostItem;
         private System.Windows.Forms.Button btnGoToTransactions;
-        private System.Windows.Forms.ListView listViewItems;
         private System.Windows.Forms.Label lblNamaItem;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.DataGridView dataGridViewItems;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Model;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MaterialType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Deskripsi;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Kuantitas;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Username;
     }
 }

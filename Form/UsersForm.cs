@@ -64,17 +64,11 @@ namespace ClothCycles
 
                 currentUser.LoadUploadedItems(conn); // Load items from database
 
-                listViewItems.Items.Clear(); // Clear existing items from ListView
+                dataGridViewItems.Rows.Clear(); // Clear existing rows from DataGridView
 
                 foreach (var item in currentUser.UploadedItems)
                 {
-                    var listViewItem = new ListViewItem(item.Model); // Model
-                    listViewItem.SubItems.Add(item.MaterialType); // Tipe Material
-                    listViewItem.SubItems.Add(item.Description); // Deskripsi
-                    listViewItem.SubItems.Add(item.Quantity.ToString()); // Kuantitas
-                    listViewItem.SubItems.Add(item.User.Username);  // Username Pengguna
-
-                    listViewItems.Items.Add(listViewItem); // Add item to ListView
+                    dataGridViewItems.Rows.Add(item.Model, item.MaterialType, item.Description, item.Quantity, item.User.Username);
                 }
             }
             catch (Exception ex)
