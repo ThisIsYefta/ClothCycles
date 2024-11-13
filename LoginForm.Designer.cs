@@ -36,7 +36,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.lblErrorMessage = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.lblWelcomeMessage = new System.Windows.Forms.Label();
+            this.btnSignUp = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -97,7 +97,7 @@
             // lblErrorMessage
             // 
             this.lblErrorMessage.AutoSize = true;
-            this.lblErrorMessage.Location = new System.Drawing.Point(355, 405);
+            this.lblErrorMessage.Location = new System.Drawing.Point(346, 409);
             this.lblErrorMessage.Name = "lblErrorMessage";
             this.lblErrorMessage.Size = new System.Drawing.Size(44, 16);
             this.lblErrorMessage.TabIndex = 5;
@@ -116,16 +116,20 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // lblWelcomeMessage
+            // btnSignUp
             // 
-            this.lblWelcomeMessage.AutoSize = true;
-            this.lblWelcomeMessage.Location = new System.Drawing.Point(355, 405);
-            this.lblWelcomeMessage.Name = "lblWelcomeMessage";
-            this.lblWelcomeMessage.Size = new System.Drawing.Size(44, 16);
-            this.lblWelcomeMessage.TabIndex = 7;
-            this.lblWelcomeMessage.Text = "label3";
-            this.lblWelcomeMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblWelcomeMessage.Visible = false;
+            this.btnSignUp.BackColor = System.Drawing.Color.Silver;
+            this.btnSignUp.Cursor = System.Windows.Forms.Cursors.Default;
+            this.btnSignUp.Click += new System.EventHandler(this.btnSignUp_Click);
+            this.btnSignUp.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btnSignUp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSignUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSignUp.Location = new System.Drawing.Point(729, 427);
+            this.btnSignUp.Name = "btnSignUp";
+            this.btnSignUp.Size = new System.Drawing.Size(114, 36);
+            this.btnSignUp.TabIndex = 7;
+            this.btnSignUp.Text = "Sign Up";
+            this.btnSignUp.UseVisualStyleBackColor = false;
             // 
             // LoginForm
             // 
@@ -133,7 +137,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(874, 578);
-            this.Controls.Add(this.lblWelcomeMessage);
+            this.Controls.Add(this.btnSignUp);
             this.Controls.Add(this.lblErrorMessage);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.txtPassword);
@@ -159,7 +163,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label lblErrorMessage;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label lblWelcomeMessage;
+        private System.Windows.Forms.Button btnSignUp;
     }
 }
 

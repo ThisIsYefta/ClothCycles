@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 using Npgsql;
 
@@ -7,9 +6,8 @@ namespace ClothCycles
 {
     public partial class LoginForm : Form
     {
-        private string connString = "Host=localhost;Port=5432;Username=postgres;Password=Yefta21n0404;Database=ClothCycles";
+        private string connString = "Host=localhost;Port=5432;Username=postgres;Password=Yefta21n0404;Database=ClothCycles2";
         private Timer errorTimer;
-
 
         public LoginForm()
         {
@@ -56,10 +54,10 @@ namespace ClothCycles
                                 switch (role)
                                 {
                                     case "user":
-                                        account = new User(id, username, email, password, 0); // Assume points = 0 initially
+                                        account = new User(id, username, email, password, 0); // Menambahkan 0 untuk points
                                         break;
                                     case "craftsman":
-                                        account = new Craftsman(id, username, email, password, 0); // Assume earnedPoints = 0
+                                        account = new Craftsman(id, username, email, password, 0); // Menambahkan 0 untuk earnedPoints
                                         break;
                                     case "admin":
                                         account = new Admin(id, username, email, password);
@@ -73,7 +71,7 @@ namespace ClothCycles
                                 // Tampilkan pesan selamat datang di pop-up window
                                 MessageBox.Show(account.DisplayRoleMessage(), "Login Berhasil");
                             }
-                            if (password != enteredPassword)
+                            else
                             {
                                 lblErrorMessage.Text = "Password salah.";
                                 lblErrorMessage.Visible = true;
@@ -91,14 +89,26 @@ namespace ClothCycles
             }
         }
 
-                private void label1_Click(object sender, EventArgs e)
+        private void btnSignUp_Click(object sender, EventArgs e)
+        {
+            this.Hide(); // Sembunyikan LoginForm
+
+            using (SignUpForm signUpForm = new SignUpForm())
+            {
+                signUpForm.ShowDialog(); // Buka SignUpForm sebagai modal dialog
+            }
+
+            this.Show(); // Tampilkan kembali LoginForm setelah SignUpForm ditutup
+        }
+
+
+        private void label1_Click(object sender, EventArgs e)
         {
             // You can leave this empty or add functionality if needed
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Call your existing login method here
             btnLogin_Click(sender, e);
         }
 
