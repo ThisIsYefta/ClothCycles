@@ -5,24 +5,23 @@ public class Product
     public int ProductID { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    public double Price { get; set; }
-    public bool Availability { get; set; }
-    public Craftsman PostedBy { get; set; }
+    public decimal Price { get; set; }
+    public int Stock { get; set; }
+    public Craftsman Craftsman { get; set; }
 
-    public Product(int productID, string name, string description, double price, Craftsman postedBy)
+    public Product(int productID, string name, string description, decimal price, int stock, Craftsman craftsman)
     {
         ProductID = productID;
         Name = name;
         Description = description;
         Price = price;
-        Availability = true;
-        PostedBy = postedBy;
+        Stock = stock;
+        Craftsman = craftsman;
     }
 
-    // Mark the product as unavailable
     public void MarkAsSold()
     {
-        Availability = false;
-        Console.WriteLine($"{Name} marked as sold by {PostedBy.Username}");
+        Stock = 0;
+        Console.WriteLine($"{Name} marked as sold.");
     }
 }

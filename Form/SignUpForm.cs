@@ -42,7 +42,7 @@ namespace ClothCycles
                 conn.Open();
 
                 // Cek apakah username sudah ada
-                string checkQuery = "SELECT COUNT(*) FROM Account WHERE username = @username";
+                string checkQuery = "SELECT COUNT(*) FROM account WHERE username = @username";
                 using (NpgsqlCommand checkCmd = new NpgsqlCommand(checkQuery, conn))
                 {
                     checkCmd.Parameters.AddWithValue("username", username);
@@ -50,53 +50,39 @@ namespace ClothCycles
 
                     if (userCount > 0)
                     {
-                        MessageBox.Show("Username sudah terdaftar.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Username sudah terdaftar. Silakan pilih username lain.");
                         return;
                     }
                 }
 
-                // Simpan data baru ke tabel Account
-                string insertAccountQuery = "INSERT INTO Account (username, email, password, role, name) VALUES (@username, @email, @password, @role, @name) RETURNING id";
+                // Insert data ke dalam tabel 'account' terlebih dahulu
+                string insertAccountQuery = "INSERT INTO account (username, email, password, role) VALUES (@username, @email, @password, @role) RETURNING id";
                 int accountId;
-
-                using (NpgsqlCommand insertAccountCmd = new NpgsqlCommand(insertAccountQuery, conn))
+                using (NpgsqlCommand cmd = new NpgsqlCommand(insertAccountQuery, conn))
                 {
-                    insertAccountCmd.Parameters.AddWithValue("username", username);
-                    insertAccountCmd.Parameters.AddWithValue("email", email);
-                    insertAccountCmd.Parameters.AddWithValue("password", password); // Pertimbangkan hashing password sebelum disimpan
-                    insertAccountCmd.Parameters.AddWithValue("role", role); // Menggunakan role dari ComboBox
-                    insertAccountCmd.Parameters.AddWithValue("name", name); // Menyimpan nama ke kolom 'name'
-
-                    accountId = Convert.ToInt32(insertAccountCmd.ExecuteScalar());
+                    cmd.Parameters.AddWithValue("username", username);
+                    cmd.Parameters.AddWithValue("email", email);
+                    cmd.Parameters.AddWithValue("password", password);
+                    cmd.Parameters.AddWithValue("role", role);
+                    accountId = Convert.ToInt32(cmd.ExecuteScalar());
                 }
 
-                // Simpan data tambahan berdasarkan role
-                if (role == "user" || role == "craftsman")
+                // Insert data ke dalam tabel 'craftsmen' jika role = craftsman
+                if (role == "craftsman")
                 {
-                    string insertUserQuery = $"INSERT INTO {role}s (accountid, points) VALUES (@accountid, @points)";
-                    using (NpgsqlCommand insertUserCmd = new NpgsqlCommand(insertUserQuery, conn))
+                    string insertCraftsmanQuery = "INSERT INTO craftsmen (id, name, earned_points) VALUES (@id, @name, @earnedPoints)";
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(insertCraftsmanQuery, conn))
                     {
-                        insertUserCmd.Parameters.AddWithValue("accountid", accountId);
-                        insertUserCmd.Parameters.AddWithValue("points", 0); // Default points adalah 0
-
-                        insertUserCmd.ExecuteNonQuery();
+                        cmd.Parameters.AddWithValue("id", accountId);
+                        cmd.Parameters.AddWithValue("name", name);
+                        cmd.Parameters.AddWithValue("earnedPoints", 0); // Default earned points
+                        cmd.ExecuteNonQuery();
                     }
                 }
-                else if (role == "admin")
-                {
-                    // Simpan data untuk admin
-                    string insertAdminQuery = "INSERT INTO Admins (accountid) VALUES (@accountid)";
-                    using (NpgsqlCommand insertAdminCmd = new NpgsqlCommand(insertAdminQuery, conn))
-                    {
-                        insertAdminCmd.Parameters.AddWithValue("accountid", accountId);
 
-                        insertAdminCmd.ExecuteNonQuery();
-                    }
-                }
+                MessageBox.Show("Akun berhasil dibuat!");
+                this.Close(); // Close sign-up form
             }
-
-            MessageBox.Show("Registrasi berhasil! Anda dapat login sekarang.", "Sign Up Berhasil");
-            this.Close(); // Menutup form setelah registrasi berhasil
         }
     }
 }

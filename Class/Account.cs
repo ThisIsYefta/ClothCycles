@@ -2,7 +2,7 @@
 
 public class Account
 {
-    protected int Id { get; set; }
+    public int Id { get; set; }
     public string Username { get; private set; }
     public string Email { get; private set; }
     private string Password { get; set; }

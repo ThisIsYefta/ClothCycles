@@ -6,7 +6,7 @@ namespace ClothCycles
 {
     public partial class LoginForm : Form
     {
-        private string connString = "Host=localhost;Port=5432;Username=postgres;Password=Yefta21n0404;Database=ClothCycles";
+        private string connString = "Host=localhost;Port=5432;Username=postgres;Password=Yefta21n0404;Database=ClothCycles;Include Error Detail=true";
         private Timer errorTimer;
 
         public LoginForm()
@@ -52,33 +52,33 @@ private void btnLogin_Click(object sender, EventArgs e)
 
                         Account account;
 
-                        if (password == enteredPassword) // Validate password
-                        {
-                            // Create object based on role
-                            switch (role)
-                            {
-                                case "user":
-                                    account = new User(id, username, email, password, name, 0); // Menambahkan name ke konstruktor
-                                    OpenUserForm(account); // Open UsersForm
-                                    break;
-                                case "craftsman":
-                                    account = new Craftsman(id, username, email, password, 0); // Adding 0 for earnedPoints
-                                    // OpenCraftsmanForm(account); // Placeholder for Craftsman form
-                                    break;
-                                case "admin":
-                                    account = new Admin(id, username, email, password);
-                                    // OpenAdminForm(account); // Placeholder for Admin form
-                                    break;
-                                default:
-                                    lblErrorMessage.Text = "Invalid role.";
-                                    lblErrorMessage.Visible = true;
-                                    return;
-                            }
+                                if (password == enteredPassword) // Validate password
+                                {
+                                    // Create object based on role
+                                    switch (role)
+                                    {
+                                        case "user":
+                                            account = new User(id, username, email, password, name, 0); // Correctly passing name and points
+                                            OpenUserForm(account); // Open UsersForm
+                                            break;
+                                        case "craftsman":
+                                            account = new Craftsman(id, username, email, password, name, 0); // Pass name here
+                                            OpenCraftsmanForm(account); // Open Craftsman form
+                                            break;
+                                        case "admin":
+                                            account = new Admin(id, username, email, password);
+                                            // OpenAdminForm(account); // Placeholder for Admin form
+                                            break;
+                                        default:
+                                            lblErrorMessage.Text = "Invalid role.";
+                                            lblErrorMessage.Visible = true;
+                                            return;
+                                    }
 
-                            // Show welcome message in a pop-up window
-                            MessageBox.Show(account.DisplayRoleMessage(), "Login Berhasil");
-                        }
-                        else
+                                    // Show welcome message in a pop-up window
+                                    MessageBox.Show(account.DisplayRoleMessage(), "Login Berhasil");
+                                }
+                                else
                         {
                             lblErrorMessage.Text = "Password salah.";
                             lblErrorMessage.Visible = true;
@@ -108,6 +108,15 @@ private void btnLogin_Click(object sender, EventArgs e)
             UsersForm usersForm = new UsersForm(account as User, connString); // Membuat UsersForm dengan connString
             usersForm.FormClosed += (s, args) => this.Show(); // Tampilkan LoginForm kembali saat UsersForm ditutup
             usersForm.Show(); // Tampilkan UsersForm
+        }
+
+        private void OpenCraftsmanForm(Account account)
+        {
+            this.Hide();
+
+            CraftsmanForm craftsmanForm = new CraftsmanForm(account as Craftsman, connString); // Pass connString here
+            craftsmanForm.FormClosed += (s, args) => this.Show();
+            craftsmanForm.Show();
         }
 
 
