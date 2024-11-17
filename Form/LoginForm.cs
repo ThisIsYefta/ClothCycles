@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using ClothCycles;
 using Npgsql;
 
 namespace ClothCycles
@@ -23,83 +24,83 @@ namespace ClothCycles
             errorTimer.Stop(); // Hentikan timer
         }
 
-private void btnLogin_Click(object sender, EventArgs e)
-{
-    string enteredUsername = txtUsername.Text.Trim();
-    string enteredPassword = txtPassword.Text.Trim();
-
-    using (NpgsqlConnection conn = new NpgsqlConnection(connString))
-    {
-        try
+        private void btnLogin_Click(object sender, EventArgs e)
         {
-            conn.Open(); // Open connection
+            string enteredUsername = txtUsername.Text.Trim();
+            string enteredPassword = txtPassword.Text.Trim();
 
-            string query = "SELECT id, username, email, password, role, name FROM Account WHERE username = @username"; // Menambahkan 'name'
-            using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
+            using (NpgsqlConnection conn = new NpgsqlConnection(connString))
             {
-                cmd.Parameters.AddWithValue("username", enteredUsername);
-
-                using (NpgsqlDataReader reader = cmd.ExecuteReader())
+                try
                 {
-                    if (reader.Read())
+                    conn.Open(); // Open connection
+
+                    string query = "SELECT id, username, email, password, role, name FROM Account WHERE username = @username"; // Menambahkan 'name'
+                    using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
                     {
-                        int id = reader.GetInt32(0);
-                        string username = reader.GetString(1);
-                        string email = reader.GetString(2);
-                        string password = reader.GetString(3);
-                        string role = reader.GetString(4);
-                        string name = reader.GetString(5); // Ambil nama pengguna
+                        cmd.Parameters.AddWithValue("username", enteredUsername);
 
-                        Account account;
-
-                                if (password == enteredPassword) // Validate password
-                                {
-                                    // Create object based on role
-                                    switch (role)
-                                    {
-                                        case "user":
-                                            account = new User(id, username, email, password, name, 0); // Correctly passing name and points
-                                            OpenUserForm(account); // Open UsersForm
-                                            break;
-                                        case "craftsman":
-                                            account = new Craftsman(id, username, email, password, name, 0); // Pass name here
-                                            OpenCraftsmanForm(account); // Open Craftsman form
-                                            break;
-                                        case "admin":
-                                            account = new Admin(id, username, email, password);
-                                            // OpenAdminForm(account); // Placeholder for Admin form
-                                            break;
-                                        default:
-                                            lblErrorMessage.Text = "Invalid role.";
-                                            lblErrorMessage.Visible = true;
-                                            return;
-                                    }
-
-                                    // Show welcome message in a pop-up window
-                                    MessageBox.Show(account.DisplayRoleMessage(), "Login Berhasil");
-                                }
-                                else
+                        using (NpgsqlDataReader reader = cmd.ExecuteReader())
                         {
-                            lblErrorMessage.Text = "Password salah.";
-                            lblErrorMessage.Visible = true;
-                            errorTimer.Start(); // Start timer to hide message
+                            if (reader.Read())
+                            {
+                                int id = reader.GetInt32(0);
+                                string username = reader.GetString(1);
+                                string email = reader.GetString(2);
+                                string password = reader.GetString(3);
+                                string role = reader.GetString(4);
+                                string name = reader.GetString(5); // Ambil nama pengguna
+
+                                Account account;
+
+                                        if (password == enteredPassword) // Validate password
+                                        {
+                                            // Create object based on role
+                                            switch (role)
+                                            {
+                                                case "user":
+                                                    account = new User(id, username, email, password, name, 0); // Correctly passing name and points
+                                                    OpenUserForm(account); // Open UsersForm
+                                                    break;
+                                                case "craftsman":
+                                                    account = new Craftsman(id, username, email, password, name, 0); // Pass name here
+                                                    OpenCraftsmanForm(account); // Open Craftsman form
+                                                    break;
+                                                case "admin":
+                                                    account = new Admin(id, username, email, password);
+                                                    OpenAdminForm(account);  // Panggil method OpenAdminForm untuk membuka AdminForm
+                                                    break;
+                                                default:
+                                                    lblErrorMessage.Text = "Invalid role.";
+                                                    lblErrorMessage.Visible = true;
+                                                    return;
+                                            }
+
+                                            // Show welcome message in a pop-up window
+                                            MessageBox.Show(account.DisplayRoleMessage(), "Login Berhasil");
+                                        }
+                                        else
+                                {
+                                    lblErrorMessage.Text = "Password salah.";
+                                    lblErrorMessage.Visible = true;
+                                    errorTimer.Start(); // Start timer to hide message
+                                }
+                            }
+                            else
+                            {
+                                lblErrorMessage.Text = "Username tidak ditemukan.";
+                                lblErrorMessage.Visible = true;
+                                errorTimer.Start(); // Start timer to hide message
+                            }
                         }
                     }
-                    else
-                    {
-                        lblErrorMessage.Text = "Username tidak ditemukan.";
-                        lblErrorMessage.Visible = true;
-                        errorTimer.Start(); // Start timer to hide message
-                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-    }
-}
 
         private void OpenUserForm(Account account)
         {
@@ -119,6 +120,14 @@ private void btnLogin_Click(object sender, EventArgs e)
             craftsmanForm.Show();
         }
 
+        private void OpenAdminForm(Account account)
+        {
+            this.Hide();
+
+            AdminForm adminForm = new AdminForm(account as Admin, connString); // Pass the Admin object and connection string
+            adminForm.FormClosed += (s, args) => this.Show();
+            adminForm.Show();
+        }
 
         private void btnSignUp_Click(object sender, EventArgs e)
         {

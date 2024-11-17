@@ -56,7 +56,7 @@ namespace ClothCycles
                 }
 
                 // Insert data ke dalam tabel 'account' terlebih dahulu
-                string insertAccountQuery = "INSERT INTO account (username, email, password, role) VALUES (@username, @email, @password, @role) RETURNING id";
+                string insertAccountQuery = "INSERT INTO account (username, email, password, role, name) VALUES (@username, @email, @password, @role, @name) RETURNING id";
                 int accountId;
                 using (NpgsqlCommand cmd = new NpgsqlCommand(insertAccountQuery, conn))
                 {
@@ -64,19 +64,50 @@ namespace ClothCycles
                     cmd.Parameters.AddWithValue("email", email);
                     cmd.Parameters.AddWithValue("password", password);
                     cmd.Parameters.AddWithValue("role", role);
+                    cmd.Parameters.AddWithValue("name", name);
                     accountId = Convert.ToInt32(cmd.ExecuteScalar());
                 }
 
                 // Insert data ke dalam tabel 'craftsmen' jika role = craftsman
                 if (role == "craftsman")
                 {
-                    string insertCraftsmanQuery = "INSERT INTO craftsmen (id, name, earned_points) VALUES (@id, @name, @earnedPoints)";
+                    string insertCraftsmanQuery = @"
+                        INSERT INTO craftsmen (username, email, password, name, earned_points) 
+                        VALUES (@username, @email, @password, @name, @earnedPoints)";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(insertCraftsmanQuery, conn))
                     {
-                        cmd.Parameters.AddWithValue("id", accountId);
+                        cmd.Parameters.AddWithValue("username", username);
+                        cmd.Parameters.AddWithValue("email", email);
+                        cmd.Parameters.AddWithValue("password", password);
                         cmd.Parameters.AddWithValue("name", name);
                         cmd.Parameters.AddWithValue("earnedPoints", 0); // Default earned points
                         cmd.ExecuteNonQuery();
+                    }
+                }
+
+                else if(role == "user")
+{
+                    string insertUserQuery = $"INSERT INTO {role}s (accountid, points, name) VALUES (@accountid, @points, @name)";
+                    using (NpgsqlCommand insertUserCmd = new NpgsqlCommand(insertUserQuery, conn))
+                    {
+                        insertUserCmd.Parameters.AddWithValue("accountid", accountId);
+                        insertUserCmd.Parameters.AddWithValue("points", 0); // Default points adalah 0
+                        insertUserCmd.Parameters.AddWithValue("name", name); // Tambahkan nilai name
+
+                        insertUserCmd.ExecuteNonQuery();
+                    }
+                }
+
+                else if (role == "admin")
+                {
+                    // Simpan data untuk admin
+                    string insertAdminQuery = "INSERT INTO Admins (accountid, name) VALUES (@accountid, @name)";
+                    using (NpgsqlCommand insertAdminCmd = new NpgsqlCommand(insertAdminQuery, conn))
+                    {
+                        insertAdminCmd.Parameters.AddWithValue("accountid", accountId);
+                        insertAdminCmd.Parameters.AddWithValue("name", name); // Tambahkan nama admin
+
+                        insertAdminCmd.ExecuteNonQuery();
                     }
                 }
 
