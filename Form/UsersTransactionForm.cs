@@ -29,32 +29,23 @@ namespace ClothCycles
                 return; // Hentikan eksekusi jika koneksi tidak tersedia
             }
 
+            LoadUserPoints();
+            LoadProducts();
+        }
+
+        private void LoadUserPoints()
+        {
             try
             {
-                MessageBox.Show($"Current User ID: {currentUser.userid}");
-                // Ambil nilai poin dari database
                 string query = "SELECT points FROM users WHERE accountid = @accountId";
-
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("accountId", currentUser.userid);
-
                     var result = cmd.ExecuteScalar();
-                    if (result != null && result != DBNull.Value)
-                    {
-                        currentUser.Points = Convert.ToInt32(result); // Set nilai poin
-                        lblPoint.Text = $"Your Points: {currentUser.Points}"; // Tampilkan poin di label
-                    }
-                    else
-                    {
-                        currentUser.Points = 0; // Default jika poin tidak ditemukan
-                        lblPoint.Text = "Your Points: 0";
-                        MessageBox.Show("Points not found in database.");
-                    }
-                }
 
-                // Muat daftar produk
-                LoadProducts();
+                    currentUser.Points = result != null && result != DBNull.Value ? Convert.ToInt32(result) : 0;
+                    lblPoint.Text = $"Your Points: {currentUser.Points}";
+                }
             }
             catch (Exception ex)
             {
@@ -67,14 +58,13 @@ namespace ClothCycles
             try
             {
                 string query = "SELECT product_id AS \"Product ID\", name AS \"Name\", description AS \"Description\", " +
-                    "price AS \"Price\", stock AS \"Stock\" " +
-                    "FROM product WHERE stock > 0";
-                NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(query, conn);
-                DataTable productTable = new DataTable();
-                adapter.Fill(productTable);
-
-                // Binding data ke DataGridView
-                dataGridViewProduct.DataSource = productTable;
+                               "price AS \"Price\", stock AS \"Stock\" FROM product WHERE stock > 0";
+                using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(query, conn))
+                {
+                    DataTable productTable = new DataTable();
+                    adapter.Fill(productTable);
+                    dataGridViewProduct.DataSource = productTable; // Binding data ke DataGridView
+                }
             }
             catch (Exception ex)
             {
@@ -86,19 +76,14 @@ namespace ClothCycles
         {
             if (e.RowIndex >= 0)
             {
-                // Dapatkan produk yang dipilih
                 DataGridViewRow row = dataGridViewProduct.Rows[e.RowIndex];
-                //int productId = Convert.ToInt32(row.Cells["product_id"].Value);
-                int productId = Convert.ToInt32(row.Cells["Product ID"].Value); // Pastikan nama header cocok
+                int productId = Convert.ToInt32(row.Cells["Product ID"].Value);
                 string name = row.Cells["Name"].Value.ToString();
                 string description = row.Cells["Description"].Value.ToString();
                 decimal price = Convert.ToDecimal(row.Cells["Price"].Value);
                 int stock = Convert.ToInt32(row.Cells["Stock"].Value);
 
-                // Buat objek produk terpilih
                 selectedProduct = new Product(productId, name, description, price, stock, null);
-
-                // Tampilkan harga normal di lblNormalPrice
                 lblNormalPrice.Text = $"Normal Price: {price.ToString("C", new CultureInfo("id-ID"))}";
             }
         }
@@ -125,14 +110,10 @@ namespace ClothCycles
                     return;
                 }
 
-                // Hitung harga estimasi
                 decimal discount = pointsToUse * 3000;
                 decimal estimatedPrice = (selectedProduct.Price * quantity) - discount;
 
-                if (estimatedPrice < 0) estimatedPrice = 0;
-
-                // Tampilkan harga setelah diskon
-                lblEstimatedPrice.Text = $"Estimated Price: {estimatedPrice.ToString("C", new CultureInfo("id-ID"))}";
+                lblEstimatedPrice.Text = $"Estimated Price: {Math.Max(estimatedPrice, 0).ToString("C", new CultureInfo("id-ID"))}";
             }
             else
             {
@@ -153,54 +134,21 @@ namespace ClothCycles
                 decimal discount = pointsToUse * 3000;
                 decimal totalPrice = (selectedProduct.Price * quantity) - discount;
 
-                if (totalPrice < 0) totalPrice = 0;
-
-                // Update database untuk mengurangi poin pengguna, stok produk, dan membuat transaksi
                 try
                 {
                     using (var transaction = conn.BeginTransaction())
                     {
-                        // Kurangi poin pengguna
-                        string updatePointsQuery = "UPDATE users SET points = points - @points WHERE accountid = @accountId";
-                        using (var cmd = new NpgsqlCommand(updatePointsQuery, conn))
-                        {
-                            cmd.Parameters.AddWithValue("points", pointsToUse);
-                            cmd.Parameters.AddWithValue("accountId", currentUser.userid);
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        // Kurangi stok produk
-                        string updateStockQuery = "UPDATE product SET stock = stock - @quantity WHERE product_id = @productId";
-                        using (var cmd = new NpgsqlCommand(updateStockQuery, conn))
-                        {
-                            cmd.Parameters.AddWithValue("quantity", quantity);
-                            cmd.Parameters.AddWithValue("productId", selectedProduct.product_id);
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        // Tambahkan transaksi
-                        string insertTransactionQuery = @"
-                            INSERT INTO transactions (item_id, craftsman_id, points_used, quantity, total_price, address, transaction_date) 
-                            VALUES (@itemId, @craftsmanId, @pointsUsed, @quantity, @totalPrice, @address, @transactionDate)";
-                        using (var cmd = new NpgsqlCommand(insertTransactionQuery, conn))
-                        {
-                            cmd.Parameters.AddWithValue("itemId", selectedProduct.product_id);
-                            cmd.Parameters.AddWithValue("craftsmanId", selectedProduct.Craftsman.userid);
-                            cmd.Parameters.AddWithValue("pointsUsed", pointsToUse);
-                            cmd.Parameters.AddWithValue("quantity", quantity);
-                            cmd.Parameters.AddWithValue("totalPrice", totalPrice);
-                            cmd.Parameters.AddWithValue("address", txtAddress.Text);
-                            cmd.Parameters.AddWithValue("transactionDate", DateTime.Now);
-                            cmd.ExecuteNonQuery();
-                        }
+                        UpdateUserPoints(pointsToUse);
+                        UpdateProductStock(quantity);
+                        CreateTransaction(pointsToUse, quantity, totalPrice);
 
                         transaction.Commit();
                     }
 
-                    // Tampilkan pesan sukses
                     MessageBox.Show($"Your order will be delivered to {txtAddress.Text}.");
                     lblPoint.Text = $"Your Points: {currentUser.Points - pointsToUse}";
                     LoadProducts(); // Refresh daftar produk
+                    ResetInputs();
                 }
                 catch (Exception ex)
                 {
@@ -211,67 +159,100 @@ namespace ClothCycles
             {
                 MessageBox.Show("Invalid input for points or quantity.");
             }
-            // Reset semua input
+        }
+
+        private void UpdateUserPoints(int pointsToUse)
+        {
+            string updatePointsQuery = "UPDATE users SET points = points - @points WHERE accountid = @accountId";
+            using (var cmd = new NpgsqlCommand(updatePointsQuery, conn))
+            {
+                cmd.Parameters.AddWithValue("points", pointsToUse);
+                cmd.Parameters.AddWithValue("accountId", currentUser.userid);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private void UpdateProductStock(int quantity)
+        {
+            string updateStockQuery = "UPDATE product SET stock = stock - @quantity WHERE product_id = @productId";
+            using (var cmd = new NpgsqlCommand(updateStockQuery, conn))
+            {
+                cmd.Parameters.AddWithValue("quantity", quantity);
+                cmd.Parameters.AddWithValue("productId", selectedProduct.product_id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private void CreateTransaction(int pointsUsed, int quantity, decimal totalPrice)
+        {
+            string insertTransactionQuery = @"
+            INSERT INTO transactions (item_id, craftsman_id, points_used, quantity, total_price, address, transaction_date) 
+            VALUES (@itemId, @craftsmanId, @pointsUsed, @quantity, @totalPrice, @address, @transactionDate)";
+
+            using (var cmd = new NpgsqlCommand(insertTransactionQuery, conn))
+            {
+                cmd.Parameters.AddWithValue("itemId", selectedProduct.product_id);
+
+                // Pastikan untuk menggunakan ID craftsman yang baru ditambahkan
+                if (selectedProduct.Craftsman != null)
+                {
+                    cmd.Parameters.AddWithValue("craftsmanId", selectedProduct.Craftsman.id); // Menggunakan id dari Craftsman
+                }
+                else
+                {
+                    MessageBox.Show("Selected product does not have an associated craftsman.");
+                    return;
+                }
+
+                cmd.Parameters.AddWithValue("pointsUsed", pointsUsed);
+                cmd.Parameters.AddWithValue("quantity", quantity);
+                cmd.Parameters.AddWithValue("totalPrice", totalPrice);
+                cmd.Parameters.AddWithValue("address", txtAddress.Text);
+
+                // Menggunakan DateTime.UtcNow untuk konsistensi waktu.
+                cmd.Parameters.AddWithValue("transactionDate", DateTime.UtcNow);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private void ResetInputs()
+        {
             txtPoint.Text = "0";
             txtNominal.Text = "0";
-            txtAddress.Text = "";
+            txtAddress.Clear();
+
             lblNormalPrice.Text = "Normal Price: -";
             lblEstimatedPrice.Text = "Estimated Price: -";
+
             selectedProduct = null;
+        }
 
-        }
-        private void txtPoint_TextChanged(object sender, EventArgs e)
+        private void txtPoint_TextChanged(object sender, EventArgs e) => ValidateNumericInput(txtPoint);
+
+        private void txtNominal_TextChanged(object sender, EventArgs e) => ValidateNumericInput(txtNominal);
+
+        private void ValidateNumericInput(TextBox textBox)
         {
-            if (!int.TryParse(txtPoint.Text, out _))
+            if (!int.TryParse(textBox.Text, out _))
             {
-                MessageBox.Show("Please enter a valid number for points.");
-                txtPoint.Text = "0";
-            }
-        }
-        private void txtNominal_TextChanged(object sender, EventArgs e)
-        {
-            if (!int.TryParse(txtNominal.Text, out _))
-            {
-                MessageBox.Show("Please enter a valid number for quantity.");
-                txtNominal.Text = "0";
+                MessageBox.Show($"Please enter a valid number for {textBox.Name}.");
+                textBox.Text = "0"; // Reset to default value
             }
         }
 
-        private void txtPoint_Enter(object sender, EventArgs e)
-        {
-            txtPoint.Text = "";
-        }
+        private void txtPoint_Enter(object sender, EventArgs e) => txtPoint.Clear();
 
-        private void txtNominal_Enter(object sender, EventArgs e)
-        {
-            txtNominal.Text = "";
-        }
+        private void txtNominal_Enter(object sender, EventArgs e) => txtNominal.Clear();
 
-        private void txtAddress_Enter(object sender, EventArgs e)
-        {
+        private void lblPoint_Click(object sender, EventArgs e) => ShowInfoMessage(lblPoint.Text);
 
-        }
+        private void lblNormalPrice_Click(object sender, EventArgs e) => ShowInfoMessage(lblNormalPrice.Text);
 
-        private void txtAddress_TextChanged(object sender, EventArgs e)
-        {
+        private void lblEstimatedPrice_Click(object sender, EventArgs e) => ShowInfoMessage(lblEstimatedPrice.Text);
 
-        }
-
-        private void lblPoint_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("This shows your current points available for transactions.");
-        }
-
-        private void lblNormalPrice_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("This is the standard price of the selected product without discounts.");
-        }
-
-        private void lblEstimatedPrice_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("This is the total price after applying discounts and points.");
-        }
-
+        private void ShowInfoMessage(string message) => MessageBox.Show(message); // Menampilkan pesan info
+        private void txtAddress_TextChanged(object sender, EventArgs e) { }
 
     }
 }

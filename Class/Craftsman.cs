@@ -4,16 +4,18 @@ using Npgsql;
 
 public class Craftsman : Account
 {
+    public int id { get; private set; } // Menambahkan properti id
     public int EarnedPoints { get; private set; }
-    public List<Product> UploadedProducts { get; private set; } // List to store uploaded items
+    public List<Product> UploadedProducts { get; private set; } // List untuk menyimpan produk yang diunggah
     public string Name { get; private set; } // Nama pengguna
 
     public Craftsman(int id, string username, string email, string password, string name, int earnedPoints)
         : base(id, username, email, password, "craftsman")
     {
+        this.id = id; // Menginisialisasi id
         EarnedPoints = earnedPoints;
         Name = name; // Inisialisasi Name
-        UploadedProducts = new List<Product>(); // Initialize the list of uploaded items
+        UploadedProducts = new List<Product>(); // Inisialisasi daftar produk yang diunggah
     }
 
     public override string DisplayRoleMessage()
