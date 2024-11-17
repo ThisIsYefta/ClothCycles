@@ -111,10 +111,8 @@ namespace ClothCycles
             this.Hide(); // Hide UsersForm
 
             UsersTransactionForm transactionForm = new UsersTransactionForm(currentUser, conn);
+            transactionForm.FormClosed += (s, args) => this.Show(); // Tampilkan LoginForm kembali saat UsersForm ditutup
             transactionForm.Show(); // Show UsersTransactionForm
-
-            this.Close(); // Close UsersForm after opening Transactions form
-
         }
     }
 }
