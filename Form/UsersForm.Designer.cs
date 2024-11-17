@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UsersForm));
             this.cmbMaterialType = new System.Windows.Forms.ComboBox();
             this.txtItemName = new System.Windows.Forms.TextBox();
             this.txtDescription = new System.Windows.Forms.TextBox();
@@ -44,7 +45,9 @@
             this.Deskripsi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Kuantitas = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Username = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewItems)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // cmbMaterialType
@@ -88,9 +91,9 @@
             // 
             // btnGoToTransactions
             // 
-            this.btnGoToTransactions.Location = new System.Drawing.Point(684, 26);
+            this.btnGoToTransactions.Location = new System.Drawing.Point(662, 32);
             this.btnGoToTransactions.Name = "btnGoToTransactions";
-            this.btnGoToTransactions.Size = new System.Drawing.Size(75, 23);
+            this.btnGoToTransactions.Size = new System.Drawing.Size(112, 61);
             this.btnGoToTransactions.TabIndex = 5;
             this.btnGoToTransactions.Text = "Go To Transactions";
             this.btnGoToTransactions.UseVisualStyleBackColor = true;
@@ -182,11 +185,22 @@
             this.Username.Name = "Username";
             this.Username.Width = 125;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(27, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(195, 103);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 12;
+            this.pictureBox1.TabStop = false;
+            // 
             // UsersForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(823, 503);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.dataGridViewItems);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -202,6 +216,7 @@
             this.Text = "UsersForm";
             this.Load += new System.EventHandler(this.UsersForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewItems)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -225,5 +240,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Deskripsi;
         private System.Windows.Forms.DataGridViewTextBoxColumn Kuantitas;
         private System.Windows.Forms.DataGridViewTextBoxColumn Username;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
