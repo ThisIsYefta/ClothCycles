@@ -2,7 +2,7 @@
 
 public class Product
 {
-    public int ProductID { get; set; }
+    public int product_id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public decimal Price { get; set; }
@@ -11,7 +11,7 @@ public class Product
 
     public Product(int productID, string name, string description, decimal price, int stock, Craftsman craftsman)
     {
-        ProductID = productID;
+        product_id = productID;
         Name = name;
         Description = description;
         Price = price;

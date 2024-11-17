@@ -105,7 +105,8 @@ namespace ClothCycles
             }
         }
 
-        private void btnGoToTransactions_Click(object sender, EventArgs e)
+
+        private void btnGoToTransactions_Click_1(object sender, EventArgs e)
         {
             this.Hide(); // Hide UsersForm
 
@@ -113,6 +114,7 @@ namespace ClothCycles
             transactionForm.Show(); // Show UsersTransactionForm
 
             this.Close(); // Close UsersForm after opening Transactions form
+
         }
     }
 }
