@@ -25,6 +25,10 @@ namespace ClothCycles
         {
             conn = new NpgsqlConnection(connstring);
 
+            // Initialize ComboBox for role selection
+            cmbRole.Items.AddRange(new string[] { "user", "craftsman", "admin" });
+            cmbRole.DropDownStyle = ComboBoxStyle.DropDownList; // Prevents manual input
+
             // Ensure columns are added only once to prevent duplicates
             if (dataGridViewAccounts.Columns.Count == 0)
             {
@@ -32,14 +36,11 @@ namespace ClothCycles
                 dataGridViewAccounts.Columns.Add("email", "Email");
                 dataGridViewAccounts.Columns.Add("role", "Role");
                 dataGridViewAccounts.Columns.Add("name", "Name");
-
-                // Adding ID column (hidden)
                 dataGridViewAccounts.Columns.Add("id", "ID");
-                dataGridViewAccounts.Columns["id"].Visible = false; // Hide the ID column if not needed
+                dataGridViewAccounts.Columns["id"].Visible = false; // Hide ID column if not needed
             }
 
-            // Now load the data
-            LoadData();
+            LoadData(); // Load existing accounts
         }
 
 
@@ -86,7 +87,7 @@ namespace ClothCycles
 
         private void btnInsert_Click(object sender, EventArgs e)
         {
-            if (InsertAccount(txtUsername.Text, txtEmail.Text, txtPassword.Text, txtRole.Text, txtName.Text))
+            if (InsertAccount(txtUsername.Text, txtEmail.Text, txtPassword.Text, cmbRole.SelectedItem.ToString(), txtName.Text))
             {
                 MessageBox.Show("Akun berhasil ditambahkan", "Well Done!", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadData();
@@ -175,7 +176,7 @@ namespace ClothCycles
                 // Isi TextBox dengan nilai yang ada di baris yang dipilih
                 txtUsername.Text = selectedRow.Cells["username"].Value.ToString();
                 txtEmail.Text = selectedRow.Cells["email"].Value.ToString();
-                txtRole.Text = selectedRow.Cells["role"].Value.ToString();
+                //txtRole.Text = selectedRow.Cells["role"].Value.ToString();
                 txtName.Text = selectedRow.Cells["name"].Value.ToString();
 
                 // Simpan ID untuk referensi saat update atau delete
@@ -185,22 +186,19 @@ namespace ClothCycles
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            // Pastikan ada baris yang dipilih
             if (dataGridViewAccounts.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Silakan pilih akun yang akan diupdate", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Ambil name dari row yang dipilih (bukan ID)
             string name = dataGridViewAccounts.SelectedRows[0].Cells["name"].Value.ToString();
 
-            // Panggil metode UpdateAccount dengan data dari TextBox
-            if (UpdateAccount(name, txtUsername.Text, txtEmail.Text, txtPassword.Text, txtRole.Text, txtName.Text))
+            if (UpdateAccount(name, txtUsername.Text, txtEmail.Text, txtPassword.Text, cmbRole.SelectedItem.ToString(), txtName.Text))
             {
                 MessageBox.Show("Akun berhasil diupdate", "Well Done!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadData(); // Reload data setelah update
-                ClearFields(); // Kosongkan TextBox
+                LoadData();
+                ClearFields();
             }
         }
 
@@ -240,6 +238,19 @@ namespace ClothCycles
                     cmd.Parameters.AddWithValue("_name", name);
                     cmd.Parameters.AddWithValue("_newName", newName);
                     cmd.ExecuteNonQuery();  // Update data name di tabel users
+                }
+                else if (roleFromDB == "craftsman")
+                {
+                    // Jika role craftsman, update data di tabel craftsmen
+                    sql = @"UPDATE craftsmen SET username = :_username, email = :_email, password = :_password, name = :_newName WHERE name = :_name";
+                    cmd = new NpgsqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("_name", name);  // Gunakan name untuk menemukan record yang akan diupdate
+                    cmd.Parameters.AddWithValue("_username", username);
+                    cmd.Parameters.AddWithValue("_email", email);
+                    cmd.Parameters.AddWithValue("_password", password); // Pastikan untuk hashing password sebelum menyimpan
+                    cmd.Parameters.AddWithValue("_newName", newName);
+
+                    cmd.ExecuteNonQuery();  // Update data craftsmen
                 }
                 else
                 {
@@ -370,9 +381,9 @@ namespace ClothCycles
         {
             txtName.Clear();
             txtEmail.Clear();
-            txtPassword.Clear(); // Jika ada field password
-            txtRole.Clear();     // Field untuk role
-            txtUsername.Clear();     // Field untuk nama
+            txtPassword.Clear();
+            cmbRole.SelectedIndex = -1; // Clear selected item in ComboBox
+            txtUsername.Clear();
         }
     }
 }

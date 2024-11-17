@@ -40,10 +40,10 @@
             this.lblName = new System.Windows.Forms.Label();
             this.txtUsername = new System.Windows.Forms.TextBox();
             this.dataGridViewAccounts = new System.Windows.Forms.DataGridView();
-            this.txtRole = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.txtName = new System.Windows.Forms.TextBox();
+            this.cmbRole = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAccounts)).BeginInit();
             this.SuspendLayout();
             // 
@@ -172,15 +172,6 @@
             this.dataGridViewAccounts.Size = new System.Drawing.Size(732, 221);
             this.dataGridViewAccounts.TabIndex = 22;
             // 
-            // txtRole
-            // 
-            this.txtRole.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtRole.Location = new System.Drawing.Point(164, 225);
-            this.txtRole.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.txtRole.Name = "txtRole";
-            this.txtRole.Size = new System.Drawing.Size(196, 22);
-            this.txtRole.TabIndex = 27;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -210,14 +201,22 @@
             this.txtName.Size = new System.Drawing.Size(198, 22);
             this.txtName.TabIndex = 30;
             // 
+            // cmbRole
+            // 
+            this.cmbRole.FormattingEnabled = true;
+            this.cmbRole.Location = new System.Drawing.Point(162, 225);
+            this.cmbRole.Name = "cmbRole";
+            this.cmbRole.Size = new System.Drawing.Size(163, 24);
+            this.cmbRole.TabIndex = 32;
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 542);
+            this.Controls.Add(this.cmbRole);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtName);
-            this.Controls.Add(this.txtRole);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnLoaddata);
@@ -253,9 +252,9 @@
         private System.Windows.Forms.Label lblName;
         public System.Windows.Forms.TextBox txtUsername;
         private System.Windows.Forms.DataGridView dataGridViewAccounts;
-        public System.Windows.Forms.TextBox txtRole;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.TextBox txtName;
+        private System.Windows.Forms.ComboBox cmbRole;
     }
 }
