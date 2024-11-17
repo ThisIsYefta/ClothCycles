@@ -77,7 +77,7 @@ namespace ClothCycles
                                             }
 
                                             // Show welcome message in a pop-up window
-                                            MessageBox.Show(account.DisplayRoleMessage(), "Login Berhasil");
+                                            //MessageBox.Show(account.DisplayRoleMessage(), "Login Berhasil");
                                         }
                                         else
                                 {

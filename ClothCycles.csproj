@@ -135,11 +135,11 @@
     <Compile Include="Form\UsersForm.Designer.cs">
       <DependentUpon>UsersForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form\UserTransactionForm.cs">
+    <Compile Include="Form\UsersTransactionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\UserTransactionForm.Designer.cs">
-      <DependentUpon>UserTransactionForm.cs</DependentUpon>
+    <Compile Include="Form\UsersTransactionForm.Designer.cs">
+      <DependentUpon>UsersTransactionForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Form\AdminForm.resx">
       <DependentUpon>AdminForm.cs</DependentUpon>
@@ -153,8 +153,8 @@
     <EmbeddedResource Include="Form\UsersForm.resx">
       <DependentUpon>UsersForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form\UserTransactionForm.resx">
-      <DependentUpon>UserTransactionForm.cs</DependentUpon>
+    <EmbeddedResource Include="Form\UsersTransactionForm.resx">
+      <DependentUpon>UsersTransactionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

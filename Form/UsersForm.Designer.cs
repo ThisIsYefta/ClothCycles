@@ -97,6 +97,7 @@
             this.btnGoToTransactions.TabIndex = 5;
             this.btnGoToTransactions.Text = "Go To Transactions";
             this.btnGoToTransactions.UseVisualStyleBackColor = true;
+            this.btnGoToTransactions.Click += new System.EventHandler(this.btnGoToTransactions_Click_1);
             // 
             // lblNamaItem
             // 

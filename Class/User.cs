@@ -4,7 +4,7 @@ using Npgsql;
 
 public class User : Account
 {
-    public int Points { get; private set; }
+    public int Points { get; set; }
     public List<Item> UploadedItems { get; private set; } // List to store uploaded items
     public string Name { get; private set; } // Nama pengguna
 
@@ -16,11 +16,6 @@ public class User : Account
         UploadedItems = new List<Item>(); // Initialize the list of uploaded items
     }
 
-    public override string DisplayRoleMessage()
-    {
-        return "Welcome, User! You can view and manage your points.";
-    }
-
     public void LoadUploadedItems(NpgsqlConnection conn)
     {
         UploadedItems.Clear(); // Clear existing items
@@ -29,7 +24,7 @@ public class User : Account
 
         using (var cmd = new NpgsqlCommand(query, conn))
         {
-            cmd.Parameters.AddWithValue("userId", Id);
+            cmd.Parameters.AddWithValue("userId", userid);
 
             using (var reader = cmd.ExecuteReader())
             {
@@ -59,7 +54,7 @@ public class User : Account
             cmd.Parameters.AddWithValue("model", item.Model);
             cmd.Parameters.AddWithValue("description", item.Description);
             cmd.Parameters.AddWithValue("quantity", item.Quantity);
-            cmd.Parameters.AddWithValue("userId", Id);
+            cmd.Parameters.AddWithValue("userId", userid);
 
             cmd.ExecuteNonQuery();
         }
