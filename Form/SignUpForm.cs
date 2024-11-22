@@ -72,8 +72,8 @@ namespace ClothCycles
                 if (role == "craftsman")
                 {
                     string insertCraftsmanQuery = @"
-                        INSERT INTO craftsmen (username, email, password, name, earned_points) 
-                        VALUES (@username, @email, @password, @name, @earnedPoints)";
+                        INSERT INTO craftsmen (username, email, password, name, earned_points, accountid) 
+                        VALUES (@username, @email, @password, @name, @earnedPoints, @accountId)";
                     using (NpgsqlCommand cmd = new NpgsqlCommand(insertCraftsmanQuery, conn))
                     {
                         cmd.Parameters.AddWithValue("username", username);
@@ -81,6 +81,7 @@ namespace ClothCycles
                         cmd.Parameters.AddWithValue("password", password);
                         cmd.Parameters.AddWithValue("name", name);
                         cmd.Parameters.AddWithValue("earnedPoints", 0); // Default earned points
+                        cmd.Parameters.AddWithValue("accountId", accountId); // Insert the accountid as foreign key
                         cmd.ExecuteNonQuery();
                     }
                 }

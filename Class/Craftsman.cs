@@ -31,7 +31,7 @@ public class Craftsman : Account
 
         using (var cmd = new NpgsqlCommand(query, conn))
         {
-            cmd.Parameters.AddWithValue("craftsmanId", userid);
+            cmd.Parameters.AddWithValue("craftsmanId", Accountid);
 
             using (var reader = cmd.ExecuteReader())
             {
@@ -60,7 +60,7 @@ public class Craftsman : Account
             cmd.Parameters.AddWithValue("description", product.Description);
             cmd.Parameters.AddWithValue("price", product.Price);
             cmd.Parameters.AddWithValue("stock", product.Stock);
-            cmd.Parameters.AddWithValue("craftsmanid", userid); // Correct foreign key column name
+            cmd.Parameters.AddWithValue("craftsmanid", Accountid); // Correct foreign key column name
             cmd.ExecuteNonQuery();
         }
         UploadedProducts.Add(product);

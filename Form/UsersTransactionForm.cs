@@ -40,7 +40,7 @@ namespace ClothCycles
                 string query = "SELECT points FROM users WHERE accountid = @accountId";
                 using (var cmd = new NpgsqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("accountId", currentUser.userid);
+                    cmd.Parameters.AddWithValue("accountId", currentUser.Accountid);
                     var result = cmd.ExecuteScalar();
 
                     currentUser.Points = result != null && result != DBNull.Value ? Convert.ToInt32(result) : 0;
@@ -205,7 +205,7 @@ namespace ClothCycles
             using (var cmd = new NpgsqlCommand(updatePointsQuery, conn))
             {
                 cmd.Parameters.AddWithValue("points", pointsToUse);
-                cmd.Parameters.AddWithValue("accountId", currentUser.userid);
+                cmd.Parameters.AddWithValue("accountId", currentUser.Accountid);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -236,7 +236,7 @@ namespace ClothCycles
                 decimal discountedPrice = totalPrice - pointsUsed;
 
                 // Cari user_id berdasarkan accountid
-                int userId = GetUserIdByAccountId(currentUser.userid);  // Ambil userid berdasarkan accountid
+                int userId = GetUserIdByAccountId(currentUser.Accountid);  // Ambil userid berdasarkan accountid
 
                 if (userId == -1)
                 {

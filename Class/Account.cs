@@ -2,7 +2,7 @@
 
 public class Account
 {
-    public int userid { get; set; }
+    public int Accountid { get; set; }
     public string Username { get; private set; }
     public string Email { get; private set; }
     private string Password { get; set; }
@@ -10,7 +10,7 @@ public class Account
 
     public Account(int id, string username, string email, string password, string role)
     {
-        userid = id;
+        Accountid = id;
         Username = username;
         Email = email;
         Password = password;

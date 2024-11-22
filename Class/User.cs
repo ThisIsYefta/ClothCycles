@@ -24,7 +24,7 @@ public class User : Account
 
         using (var cmd = new NpgsqlCommand(query, conn))
         {
-            cmd.Parameters.AddWithValue("userId", userid);
+            cmd.Parameters.AddWithValue("userId", Accountid);
 
             using (var reader = cmd.ExecuteReader())
             {
@@ -54,7 +54,7 @@ public class User : Account
             cmd.Parameters.AddWithValue("model", item.Model);
             cmd.Parameters.AddWithValue("description", item.Description);
             cmd.Parameters.AddWithValue("quantity", item.Quantity);
-            cmd.Parameters.AddWithValue("userId", userid);
+            cmd.Parameters.AddWithValue("userId", Accountid);
 
             cmd.ExecuteNonQuery();
         }
