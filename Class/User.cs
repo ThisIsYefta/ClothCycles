@@ -62,4 +62,20 @@ public class User : Account
 
         UploadedItems.Add(item);
     }
+
+    public void DeleteItem(Item item, NpgsqlConnection conn)
+    {
+        string query = "DELETE FROM items WHERE itemid = @itemid"; // Ganti 'items' dengan nama tabel yang sesuai
+
+        using (var cmd = new NpgsqlCommand(query, conn))
+        {
+            cmd.Parameters.AddWithValue("itemid", item.ItemID); // Gunakan ID item untuk menghapus
+
+            cmd.ExecuteNonQuery(); // Eksekusi query
+        }
+
+        // Hapus item dari daftar UploadedItems
+        UploadedItems.Remove(item);
+    }
+
 }

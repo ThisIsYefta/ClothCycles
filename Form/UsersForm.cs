@@ -114,5 +114,41 @@ namespace ClothCycles
             transactionForm.FormClosed += (s, args) => this.Show(); // Tampilkan LoginForm kembali saat UsersForm ditutup
             transactionForm.Show(); // Show UsersTransactionForm
         }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewItems.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select an item to delete.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var selectedRow = dataGridViewItems.SelectedRows[0];
+            var itemModel = selectedRow.Cells[0].Value.ToString(); // Ambil nama model item dari kolom pertama
+
+            try
+            {
+                // Cari item yang sesuai berdasarkan nama model
+                var itemToDelete = currentUser.UploadedItems.Find(item => item.Model == itemModel);
+
+                if (itemToDelete == null)
+                {
+                    MessageBox.Show("The selected item could not be found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Hapus item dari database
+                currentUser.DeleteItem(itemToDelete, conn);
+
+                MessageBox.Show("Item deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Refresh tampilan DataGridView
+                LoadUploadedItems();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while deleting the item: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

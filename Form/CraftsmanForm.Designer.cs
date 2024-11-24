@@ -41,6 +41,7 @@
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.txtPrice = new System.Windows.Forms.TextBox();
             this.txtProductName = new System.Windows.Forms.TextBox();
+            this.btnDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProducts)).BeginInit();
             this.SuspendLayout();
             // 
@@ -116,9 +117,9 @@
             // btnPostProduct
             // 
             this.btnPostProduct.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPostProduct.Location = new System.Drawing.Point(46, 371);
+            this.btnPostProduct.Location = new System.Drawing.Point(153, 351);
             this.btnPostProduct.Name = "btnPostProduct";
-            this.btnPostProduct.Size = new System.Drawing.Size(91, 37);
+            this.btnPostProduct.Size = new System.Drawing.Size(91, 60);
             this.btnPostProduct.TabIndex = 29;
             this.btnPostProduct.Text = "Post Product";
             this.btnPostProduct.UseVisualStyleBackColor = true;
@@ -145,6 +146,17 @@
             this.txtProductName.Size = new System.Drawing.Size(100, 22);
             this.txtProductName.TabIndex = 26;
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDelete.Location = new System.Drawing.Point(37, 351);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(91, 60);
+            this.btnDelete.TabIndex = 36;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
             // CraftsmanForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -152,6 +164,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.txtStock);
             this.Controls.Add(this.dataGridViewProducts);
             this.Controls.Add(this.btnGoToTransactions);
@@ -182,5 +195,6 @@
         private System.Windows.Forms.TextBox txtDescription;
         private System.Windows.Forms.TextBox txtPrice;
         private System.Windows.Forms.TextBox txtProductName;
+        private System.Windows.Forms.Button btnDelete;
     }
 }

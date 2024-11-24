@@ -41,6 +41,7 @@
             this.Deskripsi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Kuantitas = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Username = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewItems)).BeginInit();
             this.SuspendLayout();
             // 
@@ -76,7 +77,7 @@
             // btnPostItem
             // 
             this.btnPostItem.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPostItem.Location = new System.Drawing.Point(51, 356);
+            this.btnPostItem.Location = new System.Drawing.Point(140, 376);
             this.btnPostItem.Name = "btnPostItem";
             this.btnPostItem.Size = new System.Drawing.Size(91, 37);
             this.btnPostItem.TabIndex = 4;
@@ -146,6 +147,17 @@
             this.Username.Name = "Username";
             this.Username.Width = 125;
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDelete.Location = new System.Drawing.Point(27, 376);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(91, 37);
+            this.btnDelete.TabIndex = 12;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
             // UsersForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -153,6 +165,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(823, 503);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.dataGridViewItems);
             this.Controls.Add(this.btnGoToTransactions);
             this.Controls.Add(this.btnPostItem);
@@ -184,5 +197,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Deskripsi;
         private System.Windows.Forms.DataGridViewTextBoxColumn Kuantitas;
         private System.Windows.Forms.DataGridViewTextBoxColumn Username;
+        private System.Windows.Forms.Button btnDelete;
     }
 }

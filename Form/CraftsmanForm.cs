@@ -116,6 +116,41 @@ namespace ClothCycles
             craftsmantransactionForm.FormClosed += (s, args) => this.Show(); // Tampilkan LoginForm kembali saat UsersForm ditutup
             craftsmantransactionForm.Show(); // Show UsersTransactionForm
         }
-        
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewProducts.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a product to delete.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var selectedRow = dataGridViewProducts.SelectedRows[0];
+            var productName = selectedRow.Cells[0].Value.ToString(); // Ambil nama produk dari kolom pertama
+
+            try
+            {
+                // Cari produk berdasarkan nama
+                var productToDelete = currentCraftsman.UploadedProducts.Find(product => product.Name == productName);
+
+                if (productToDelete == null)
+                {
+                    MessageBox.Show("The selected product could not be found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Hapus produk dari database
+                currentCraftsman.DeleteProduct(productToDelete, conn);
+
+                MessageBox.Show("Product deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Refresh tampilan DataGridView
+                LoadUploadedProducts();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while deleting the product: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

@@ -97,5 +97,19 @@ public class Craftsman : Account
         }
     }
 
+    public void DeleteProduct(Product product, NpgsqlConnection conn)
+    {
+        string query = "DELETE FROM product WHERE product_id = @product_id"; // Ganti 'products' dengan nama tabel yang sesuai
+
+        using (var cmd = new NpgsqlCommand(query, conn))
+        {
+            cmd.Parameters.AddWithValue("product_id", product.product_id); // Gunakan ID produk untuk menghapus
+
+            cmd.ExecuteNonQuery(); // Eksekusi query
+        }
+
+        // Hapus produk dari daftar UploadedProducts
+        UploadedProducts.Remove(product);
+    }
 
 }
