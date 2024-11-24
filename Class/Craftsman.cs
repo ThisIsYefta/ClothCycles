@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using Npgsql;
 
 public class Craftsman : Account
@@ -53,16 +54,48 @@ public class Craftsman : Account
 
     public void UploadProduct(Product product, NpgsqlConnection conn)
     {
-        string query = "INSERT INTO product (name, description, price, stock, accountid) VALUES (@name, @description, @price, @stock, @craftsmanid)"; // Adjust table name to "product"
-        using (var cmd = new NpgsqlCommand(query, conn))
+        try
         {
-            cmd.Parameters.AddWithValue("name", product.Name);
-            cmd.Parameters.AddWithValue("description", product.Description);
-            cmd.Parameters.AddWithValue("price", product.Price);
-            cmd.Parameters.AddWithValue("stock", product.Stock);
-            cmd.Parameters.AddWithValue("craftsmanid", Accountid); // Correct foreign key column name
-            cmd.ExecuteNonQuery();
+            // Cari craftsman_id berdasarkan accountid
+            int craftsmanId;
+            string getCraftsmanIdQuery = "SELECT id FROM craftsmen WHERE accountid = @accountid";
+            using (var cmd = new NpgsqlCommand(getCraftsmanIdQuery, conn))
+            {
+                cmd.Parameters.AddWithValue("accountid", Accountid);
+                var result = cmd.ExecuteScalar();
+                if (result != null)
+                {
+                    craftsmanId = Convert.ToInt32(result);
+                }
+                else
+                {
+                    throw new Exception("Craftsman tidak ditemukan untuk accountid ini.");
+                }
+            }
+
+            // Masukkan data ke tabel product
+            string insertProductQuery = @"
+            INSERT INTO product (name, description, price, stock, craftsmen_id, accountid) 
+            VALUES (@name, @description, @price, @stock, @craftsmanid, @accountid)";
+            using (var cmd = new NpgsqlCommand(insertProductQuery, conn))
+            {
+                cmd.Parameters.AddWithValue("name", product.Name);
+                cmd.Parameters.AddWithValue("description", product.Description);
+                cmd.Parameters.AddWithValue("price", product.Price);
+                cmd.Parameters.AddWithValue("stock", product.Stock);
+                cmd.Parameters.AddWithValue("craftsmanid", craftsmanId); // ID dari tabel craftsmen
+                cmd.Parameters.AddWithValue("accountid", Accountid); // ID dari tabel account
+                cmd.ExecuteNonQuery();
+            }
+
+            // Tambahkan ke daftar produk yang telah diunggah
+            UploadedProducts.Add(product);
         }
-        UploadedProducts.Add(product);
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error saat mengunggah produk: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
+
+
 }
