@@ -53,7 +53,7 @@
             // 
             // txtAddress
             // 
-            this.txtAddress.Location = new System.Drawing.Point(123, 199);
+            this.txtAddress.Location = new System.Drawing.Point(123, 187);
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.Size = new System.Drawing.Size(171, 22);
             this.txtAddress.TabIndex = 13;
@@ -61,7 +61,7 @@
             // 
             // txtNominal
             // 
-            this.txtNominal.Location = new System.Drawing.Point(123, 287);
+            this.txtNominal.Location = new System.Drawing.Point(123, 265);
             this.txtNominal.Name = "txtNominal";
             this.txtNominal.Size = new System.Drawing.Size(171, 22);
             this.txtNominal.TabIndex = 14;
@@ -81,7 +81,7 @@
             // btnSelect
             // 
             this.btnSelect.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSelect.Location = new System.Drawing.Point(96, 432);
+            this.btnSelect.Location = new System.Drawing.Point(113, 427);
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.Size = new System.Drawing.Size(128, 58);
             this.btnSelect.TabIndex = 17;
@@ -116,6 +116,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1200, 540);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnSaveItem);
@@ -124,6 +125,7 @@
             this.Controls.Add(this.txtNominal);
             this.Controls.Add(this.txtAddress);
             this.Controls.Add(this.dataGridViewItem);
+            this.DoubleBuffered = true;
             this.Name = "CraftsmanTransactionForm";
             this.Text = "CraftsmanTransactionForm";
             this.Load += new System.EventHandler(this.CraftsmanTransactionForm_Load);
