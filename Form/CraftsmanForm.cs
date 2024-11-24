@@ -9,6 +9,8 @@ namespace ClothCycles
     {
         private Craftsman currentCraftsman;
         private NpgsqlConnection conn;
+        private string connectionString; // Tambahkan connectionString sebagai properti kelas
+
 
         public CraftsmanForm(Craftsman craftsman, string connString)
         {
@@ -108,7 +110,12 @@ namespace ClothCycles
 
         private void btnGoToTransactions_Click(object sender, EventArgs e)
         {
-            // Handle transactions here
+            this.Hide(); // Hide UsersForm
+
+            CraftsmanTransactionForm craftsmantransactionForm = new CraftsmanTransactionForm(currentCraftsman, conn);
+            craftsmantransactionForm.FormClosed += (s, args) => this.Show(); // Tampilkan LoginForm kembali saat UsersForm ditutup
+            craftsmantransactionForm.Show(); // Show UsersTransactionForm
         }
+        
     }
 }

@@ -152,6 +152,8 @@
             this.btnGoToTransactions.TabIndex = 30;
             this.btnGoToTransactions.Text = "Go To Transactions";
             this.btnGoToTransactions.UseVisualStyleBackColor = true;
+            this.btnGoToTransactions.Click += new System.EventHandler(this.btnGoToTransactions_Click);
+
             // 
             // btnPostProduct
             // 

@@ -7,6 +7,7 @@ public class User : Account
     public int Points { get; set; }
     public List<Item> UploadedItems { get; private set; } // List to store uploaded items
     public string Name { get; private set; } // Nama pengguna
+    public int userid { get; set; }
 
     public User(int id, string username, string email, string password, string name, int points)
         : base(id, username, email, password, "user")

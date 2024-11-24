@@ -95,6 +95,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CraftsmanTransactionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CraftsmanTransactionForm.Designer.cs">
+      <DependentUpon>CraftsmanTransactionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CraftsmanTransactionForm2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CraftsmanTransactionForm2.Designer.cs">
+      <DependentUpon>CraftsmanTransactionForm2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\AdminForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,6 +153,12 @@
     <Compile Include="Form\UsersTransactionForm.Designer.cs">
       <DependentUpon>UsersTransactionForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="CraftsmanTransactionForm.resx">
+      <DependentUpon>CraftsmanTransactionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CraftsmanTransactionForm2.resx">
+      <DependentUpon>CraftsmanTransactionForm2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\AdminForm.resx">
       <DependentUpon>AdminForm.cs</DependentUpon>
     </EmbeddedResource>
