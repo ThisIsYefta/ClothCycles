@@ -173,12 +173,7 @@ namespace ClothCycles
                 {
                     using (var transaction = conn.BeginTransaction())
                     {
-                        //UpdateUserPoints(pointsToUse);
-                        //UpdateProductStock(quantity);
                         CreateTransaction(pointsToUse, quantity, totalPrice);
-
-                        // Update earned_points for the craftsman
-                        //UpdateCraftsmanEarnedPoints(selectedProduct.Craftsman?.id ?? 0, pointsToUse);
 
                         transaction.Commit();
                     }
