@@ -35,6 +35,7 @@
             this.dataGridViewSelectedItem = new System.Windows.Forms.DataGridView();
             this.btnSelect = new System.Windows.Forms.Button();
             this.btnSaveItem = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewItem)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSelectedItem)).BeginInit();
             this.SuspendLayout();
@@ -80,7 +81,7 @@
             // btnSelect
             // 
             this.btnSelect.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSelect.Location = new System.Drawing.Point(81, 405);
+            this.btnSelect.Location = new System.Drawing.Point(96, 432);
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.Size = new System.Drawing.Size(128, 58);
             this.btnSelect.TabIndex = 17;
@@ -91,7 +92,7 @@
             // btnSaveItem
             // 
             this.btnSaveItem.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSaveItem.Location = new System.Drawing.Point(250, 372);
+            this.btnSaveItem.Location = new System.Drawing.Point(273, 360);
             this.btnSaveItem.Name = "btnSaveItem";
             this.btnSaveItem.Size = new System.Drawing.Size(96, 35);
             this.btnSaveItem.TabIndex = 18;
@@ -99,12 +100,24 @@
             this.btnSaveItem.UseVisualStyleBackColor = true;
             this.btnSaveItem.Click += new System.EventHandler(this.btnSaveItem_Click);
             // 
+            // btnDelete
+            // 
+            this.btnDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDelete.Location = new System.Drawing.Point(273, 401);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(96, 35);
+            this.btnDelete.TabIndex = 19;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
             // CraftsmanTransactionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(1200, 540);
+            this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnSaveItem);
             this.Controls.Add(this.btnSelect);
             this.Controls.Add(this.dataGridViewSelectedItem);
@@ -129,5 +142,6 @@
         private System.Windows.Forms.DataGridView dataGridViewSelectedItem;
         private System.Windows.Forms.Button btnSelect;
         private System.Windows.Forms.Button btnSaveItem;
+        private System.Windows.Forms.Button btnDelete;
     }
 }

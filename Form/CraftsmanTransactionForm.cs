@@ -309,5 +309,41 @@ namespace ClothCycles
             // Placeholder for event logic (can be left empty if not needed)
         }
 
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewSelectedItem.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select an item to delete.");
+                return;
+            }
+
+            try
+            {
+                // Get the selected row index
+                var selectedRow = dataGridViewSelectedItem.SelectedRows[0];
+                int selectedItemId = Convert.ToInt32(selectedRow.Cells["itemid"].Value);
+
+                // Find the item in the selectedItems list
+                var itemToRemove = selectedItems.Find(item => item.ItemID == selectedItemId);
+                if (itemToRemove != null)
+                {
+                    // Remove the item from the selectedItems list
+                    selectedItems.Remove(itemToRemove);
+
+                    // Remove the item from the dataGridViewSelectedItem
+                    dataGridViewSelectedItem.Rows.Remove(selectedRow);
+
+                    MessageBox.Show($"Item '{itemToRemove.Model}' removed successfully.");
+                }
+                else
+                {
+                    MessageBox.Show("Item not found in the selection list.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error removing item: " + ex.Message);
+            }
+        }
     }
 }
