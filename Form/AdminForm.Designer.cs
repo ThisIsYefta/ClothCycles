@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminForm));
             this.label1 = new System.Windows.Forms.Label();
-            this.btnLoaddata = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnInsert = new System.Windows.Forms.Button();
@@ -59,17 +58,6 @@
             this.label1.Size = new System.Drawing.Size(229, 46);
             this.label1.TabIndex = 24;
             this.label1.Text = "Data Users";
-            // 
-            // btnLoaddata
-            // 
-            this.btnLoaddata.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLoaddata.Location = new System.Drawing.Point(642, 500);
-            this.btnLoaddata.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnLoaddata.Name = "btnLoaddata";
-            this.btnLoaddata.Size = new System.Drawing.Size(123, 28);
-            this.btnLoaddata.TabIndex = 23;
-            this.btnLoaddata.Text = "Load Data";
-            this.btnLoaddata.UseVisualStyleBackColor = true;
             // 
             // btnDelete
             // 
@@ -235,7 +223,6 @@
             this.Controls.Add(this.txtName);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnLoaddata);
             this.Controls.Add(this.dataGridViewAccounts);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnUpdate);
@@ -260,7 +247,6 @@
 
         #endregion
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button btnLoaddata;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Button btnInsert;

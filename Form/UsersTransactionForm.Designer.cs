@@ -42,6 +42,7 @@
             this.txtNominal = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.lblNominal = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProduct)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -50,7 +51,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(240, 22);
+            this.label1.Location = new System.Drawing.Point(223, 22);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(50, 16);
             this.label1.TabIndex = 1;
@@ -60,7 +61,7 @@
             // 
             this.lblPoint.AutoSize = true;
             this.lblPoint.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPoint.Location = new System.Drawing.Point(240, 60);
+            this.lblPoint.Location = new System.Drawing.Point(223, 60);
             this.lblPoint.Name = "lblPoint";
             this.lblPoint.Size = new System.Drawing.Size(50, 16);
             this.lblPoint.TabIndex = 2;
@@ -80,7 +81,7 @@
             // 
             // txtPoint
             // 
-            this.txtPoint.Location = new System.Drawing.Point(141, 235);
+            this.txtPoint.Location = new System.Drawing.Point(156, 235);
             this.txtPoint.Name = "txtPoint";
             this.txtPoint.Size = new System.Drawing.Size(143, 22);
             this.txtPoint.TabIndex = 4;
@@ -90,7 +91,7 @@
             // 
             this.lblEstimatedPrice.AutoSize = true;
             this.lblEstimatedPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEstimatedPrice.Location = new System.Drawing.Point(12, 328);
+            this.lblEstimatedPrice.Location = new System.Drawing.Point(28, 383);
             this.lblEstimatedPrice.Name = "lblEstimatedPrice";
             this.lblEstimatedPrice.Size = new System.Drawing.Size(128, 16);
             this.lblEstimatedPrice.TabIndex = 5;
@@ -100,9 +101,9 @@
             // btnEstimate
             // 
             this.btnEstimate.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEstimate.Location = new System.Drawing.Point(209, 277);
+            this.btnEstimate.Location = new System.Drawing.Point(238, 331);
             this.btnEstimate.Name = "btnEstimate";
-            this.btnEstimate.Size = new System.Drawing.Size(75, 23);
+            this.btnEstimate.Size = new System.Drawing.Size(90, 23);
             this.btnEstimate.TabIndex = 6;
             this.btnEstimate.Text = "Estimate";
             this.btnEstimate.UseVisualStyleBackColor = true;
@@ -150,9 +151,9 @@
             // 
             // txtNominal
             // 
-            this.txtNominal.Location = new System.Drawing.Point(146, 322);
+            this.txtNominal.Location = new System.Drawing.Point(156, 277);
             this.txtNominal.Name = "txtNominal";
-            this.txtNominal.Size = new System.Drawing.Size(138, 22);
+            this.txtNominal.Size = new System.Drawing.Size(143, 22);
             this.txtNominal.TabIndex = 11;
             this.txtNominal.TextChanged += new System.EventHandler(this.txtNominal_TextChanged);
             // 
@@ -170,17 +171,28 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(36, 241);
+            this.label2.Location = new System.Drawing.Point(41, 241);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(99, 16);
             this.label2.TabIndex = 13;
             this.label2.Text = "Input Points >";
+            // 
+            // lblNominal
+            // 
+            this.lblNominal.AutoSize = true;
+            this.lblNominal.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNominal.Location = new System.Drawing.Point(65, 277);
+            this.lblNominal.Name = "lblNominal";
+            this.lblNominal.Size = new System.Drawing.Size(75, 16);
+            this.lblNominal.TabIndex = 14;
+            this.lblNominal.Text = "Quantity >";
             // 
             // UsersTransactionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1107, 542);
+            this.Controls.Add(this.lblNominal);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.txtNominal);
@@ -218,5 +230,6 @@
         private System.Windows.Forms.TextBox txtNominal;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblNominal;
     }
 }

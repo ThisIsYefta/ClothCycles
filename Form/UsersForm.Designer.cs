@@ -53,28 +53,28 @@
             // cmbMaterialType
             // 
             this.cmbMaterialType.FormattingEnabled = true;
-            this.cmbMaterialType.Location = new System.Drawing.Point(122, 192);
+            this.cmbMaterialType.Location = new System.Drawing.Point(131, 192);
             this.cmbMaterialType.Name = "cmbMaterialType";
-            this.cmbMaterialType.Size = new System.Drawing.Size(121, 24);
+            this.cmbMaterialType.Size = new System.Drawing.Size(100, 24);
             this.cmbMaterialType.TabIndex = 0;
             // 
             // txtItemName
             // 
-            this.txtItemName.Location = new System.Drawing.Point(122, 148);
+            this.txtItemName.Location = new System.Drawing.Point(131, 148);
             this.txtItemName.Name = "txtItemName";
             this.txtItemName.Size = new System.Drawing.Size(100, 22);
             this.txtItemName.TabIndex = 1;
             // 
             // txtDescription
             // 
-            this.txtDescription.Location = new System.Drawing.Point(122, 239);
+            this.txtDescription.Location = new System.Drawing.Point(131, 239);
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Size = new System.Drawing.Size(100, 22);
             this.txtDescription.TabIndex = 2;
             // 
             // txtQuantity
             // 
-            this.txtQuantity.Location = new System.Drawing.Point(122, 290);
+            this.txtQuantity.Location = new System.Drawing.Point(131, 290);
             this.txtQuantity.Name = "txtQuantity";
             this.txtQuantity.Size = new System.Drawing.Size(100, 22);
             this.txtQuantity.TabIndex = 3;
@@ -93,9 +93,9 @@
             // btnGoToTransactions
             // 
             this.btnGoToTransactions.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGoToTransactions.Location = new System.Drawing.Point(662, 32);
+            this.btnGoToTransactions.Location = new System.Drawing.Point(625, 32);
             this.btnGoToTransactions.Name = "btnGoToTransactions";
-            this.btnGoToTransactions.Size = new System.Drawing.Size(112, 61);
+            this.btnGoToTransactions.Size = new System.Drawing.Size(149, 61);
             this.btnGoToTransactions.TabIndex = 5;
             this.btnGoToTransactions.Text = "Go To Transactions";
             this.btnGoToTransactions.UseVisualStyleBackColor = true;
@@ -115,7 +115,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(12, 200);
+            this.label1.Location = new System.Drawing.Point(9, 200);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(107, 16);
             this.label1.TabIndex = 8;

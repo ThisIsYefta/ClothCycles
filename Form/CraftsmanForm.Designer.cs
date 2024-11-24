@@ -62,7 +62,7 @@
             // 
             // txtStock
             // 
-            this.txtStock.Location = new System.Drawing.Point(118, 256);
+            this.txtStock.Location = new System.Drawing.Point(137, 256);
             this.txtStock.Name = "txtStock";
             this.txtStock.Size = new System.Drawing.Size(100, 22);
             this.txtStock.TabIndex = 35;
@@ -151,9 +151,9 @@
             // btnGoToTransactions
             // 
             this.btnGoToTransactions.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGoToTransactions.Location = new System.Drawing.Point(625, 25);
+            this.btnGoToTransactions.Location = new System.Drawing.Point(601, 25);
             this.btnGoToTransactions.Name = "btnGoToTransactions";
-            this.btnGoToTransactions.Size = new System.Drawing.Size(120, 45);
+            this.btnGoToTransactions.Size = new System.Drawing.Size(144, 45);
             this.btnGoToTransactions.TabIndex = 30;
             this.btnGoToTransactions.Text = "Go To Transactions";
             this.btnGoToTransactions.UseVisualStyleBackColor = true;
@@ -172,21 +172,21 @@
             // 
             // txtDescription
             // 
-            this.txtDescription.Location = new System.Drawing.Point(118, 208);
+            this.txtDescription.Location = new System.Drawing.Point(137, 205);
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Size = new System.Drawing.Size(100, 22);
             this.txtDescription.TabIndex = 28;
             // 
             // txtPrice
             // 
-            this.txtPrice.Location = new System.Drawing.Point(118, 157);
+            this.txtPrice.Location = new System.Drawing.Point(137, 157);
             this.txtPrice.Name = "txtPrice";
             this.txtPrice.Size = new System.Drawing.Size(100, 22);
             this.txtPrice.TabIndex = 27;
             // 
             // txtProductName
             // 
-            this.txtProductName.Location = new System.Drawing.Point(118, 116);
+            this.txtProductName.Location = new System.Drawing.Point(137, 116);
             this.txtProductName.Name = "txtProductName";
             this.txtProductName.Size = new System.Drawing.Size(100, 22);
             this.txtProductName.TabIndex = 26;
