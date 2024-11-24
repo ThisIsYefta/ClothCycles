@@ -173,12 +173,12 @@ namespace ClothCycles
                 {
                     using (var transaction = conn.BeginTransaction())
                     {
-                        UpdateUserPoints(pointsToUse);
-                        UpdateProductStock(quantity);
+                        //UpdateUserPoints(pointsToUse);
+                        //UpdateProductStock(quantity);
                         CreateTransaction(pointsToUse, quantity, totalPrice);
 
                         // Update earned_points for the craftsman
-                        UpdateCraftsmanEarnedPoints(selectedProduct.Craftsman?.id ?? 0, pointsToUse);
+                        //UpdateCraftsmanEarnedPoints(selectedProduct.Craftsman?.id ?? 0, pointsToUse);
 
                         transaction.Commit();
                     }
@@ -244,53 +244,39 @@ namespace ClothCycles
                     return;
                 }
 
+                // Get craftsman ID using selected product's ID
+                int craftsmanId = GetCraftsmanIdByProductId(selectedProduct.product_id);
+
+                if (craftsmanId == -1)
+                {
+                    MessageBox.Show("Craftsman not found for this product.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 // Query untuk menyimpan transaksi
                 string insertTransactionQuery = @"
-                      INSERT INTO transactions (user_id, product_id, craftsman_id, points_used, quantity, total_price, address, transaction_date) 
-                      VALUES (@userId, @productId, @craftsmanId, @pointsUsed, @quantity, @totalPrice, @address, @transactionDate)";
+                    INSERT INTO transactions (user_id, product_id, craftsman_id, points_used, quantity, total_price, address, transaction_date) 
+                    VALUES (@userId, @productId, @craftsmanId, @pointsUsed, @quantity, @totalPrice, @address, @transactionDate)";
 
                 using (var cmd = new NpgsqlCommand(insertTransactionQuery, conn))
                 {
-                    cmd.Parameters.AddWithValue("userId", userId);  // Gunakan userid yang valid
+                    cmd.Parameters.AddWithValue("userId", userId); // Gunakan userid yang valid
                     cmd.Parameters.AddWithValue("productId", selectedProduct.product_id);
-
-                    // Menggunakan craftsman_id, jika ada
-                    if (selectedProduct.Craftsman != null)
-                    {
-                        cmd.Parameters.AddWithValue("craftsmanId", selectedProduct.Craftsman.id);  // craftsman_id jika ada
-                    }
-                    else
-                    {
-                        cmd.Parameters.AddWithValue("craftsmanId", DBNull.Value);  // NULL jika tidak ada craftsman
-                    }
-
+                    cmd.Parameters.AddWithValue("craftsmanId", craftsmanId); // Use the retrieved craftsman ID
                     cmd.Parameters.AddWithValue("pointsUsed", pointsUsed);
                     cmd.Parameters.AddWithValue("quantity", quantity);
-                    cmd.Parameters.AddWithValue("totalPrice", discountedPrice);  // Gunakan harga setelah diskon
+                    cmd.Parameters.AddWithValue("totalPrice", discountedPrice); // Gunakan harga setelah diskon
                     cmd.Parameters.AddWithValue("address", txtAddress.Text);
-                    cmd.Parameters.AddWithValue("transactionDate", DateTime.UtcNow);  // Waktu transaksi
+                    cmd.Parameters.AddWithValue("transactionDate", DateTime.UtcNow); // Waktu transaksi
 
                     // Eksekusi query untuk menyimpan transaksi
                     cmd.ExecuteNonQuery();
                 }
 
-                // Mengurangi stok produk setelah transaksi
-                string updateStockQuery = "UPDATE product SET stock = stock - @quantity WHERE product_id = @productId";
-                using (var updateCmd = new NpgsqlCommand(updateStockQuery, conn))
-                {
-                    updateCmd.Parameters.AddWithValue("quantity", quantity);
-                    updateCmd.Parameters.AddWithValue("productId", selectedProduct.product_id);
-                    updateCmd.ExecuteNonQuery();
-                }
+                UpdateProductStock(quantity); // Update product stock after successful transaction insertion
+                UpdateUserPoints(pointsUsed); // Update user points after successful transaction insertion
+                UpdateCraftsmanEarnedPoints(craftsmanId, pointsUsed);
 
-                // Mengurangi poin pengguna
-                string updateUserPointsQuery = "UPDATE users SET points = points - @pointsUsed WHERE userid = @userId";
-                using (var updatePointsCmd = new NpgsqlCommand(updateUserPointsQuery, conn))
-                {
-                    updatePointsCmd.Parameters.AddWithValue("pointsUsed", pointsUsed);
-                    updatePointsCmd.Parameters.AddWithValue("userId", userId);  // Gunakan userid yang valid
-                    updatePointsCmd.ExecuteNonQuery();
-                }
 
                 MessageBox.Show("Transaksi berhasil dilakukan.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -321,10 +307,23 @@ namespace ClothCycles
             }
         }
 
-
-
-
-
+        private int GetCraftsmanIdByProductId(int productId)
+        {
+            string query = "SELECT craftsmen_id FROM product WHERE product_id = @productId";
+            using (var cmd = new NpgsqlCommand(query, conn))
+            {
+                cmd.Parameters.AddWithValue("productId", productId);
+                var result = cmd.ExecuteScalar();
+                if (result != null && result != DBNull.Value)
+                {
+                    return Convert.ToInt32(result); // Return the craftsman ID found
+                }
+                else
+                {
+                    return -1; // If not found, return -1
+                }
+            }
+        }
 
         private void UpdateCraftsmanEarnedPoints(int craftsmanId, int pointsUsed)
         {
