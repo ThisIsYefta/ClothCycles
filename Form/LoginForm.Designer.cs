@@ -86,9 +86,9 @@
             this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(440, 323);
+            this.button1.Location = new System.Drawing.Point(435, 323);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(385, 40);
+            this.button1.Size = new System.Drawing.Size(390, 40);
             this.button1.TabIndex = 4;
             this.button1.Text = "Login";
             this.button1.UseVisualStyleBackColor = false;
@@ -97,6 +97,7 @@
             // lblErrorMessage
             // 
             this.lblErrorMessage.AutoSize = true;
+            this.lblErrorMessage.BackColor = System.Drawing.SystemColors.Window;
             this.lblErrorMessage.Location = new System.Drawing.Point(444, 366);
             this.lblErrorMessage.Name = "lblErrorMessage";
             this.lblErrorMessage.Size = new System.Drawing.Size(44, 16);

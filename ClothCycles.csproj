@@ -157,6 +157,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\UsersForm.resx">
       <DependentUpon>UsersForm.cs</DependentUpon>
