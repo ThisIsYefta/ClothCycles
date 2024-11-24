@@ -21,10 +21,4 @@ public class Account
     {
         return $"Welcome, {Role}!";
     }
-
-    // Method to check if the entered password matches
-    public bool ValidatePassword(string inputPassword)
-    {
-        return Password == inputPassword;
-    }
 }

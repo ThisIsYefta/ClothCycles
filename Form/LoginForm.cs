@@ -14,14 +14,14 @@ namespace ClothCycles
         {
             InitializeComponent();
             errorTimer = new Timer();
-            errorTimer.Interval = 3000; // 3000 ms = 3 detik
+            errorTimer.Interval = 3000; 
             errorTimer.Tick += ErrorTimer_Tick;
         }
 
         private void ErrorTimer_Tick(object sender, EventArgs e)
         {
-            lblErrorMessage.Visible = false; // Sembunyikan pesan error
-            errorTimer.Stop(); // Hentikan timer
+            lblErrorMessage.Visible = false; 
+            errorTimer.Stop(); 
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -35,7 +35,7 @@ namespace ClothCycles
                 {
                     conn.Open(); // Open connection
 
-                    string query = "SELECT id, username, email, password, role, name FROM Account WHERE username = @username"; // Menambahkan 'name'
+                    string query = "SELECT id, username, email, password, role, name FROM Account WHERE username = @username"; 
                     using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("username", enteredUsername);
@@ -49,48 +49,45 @@ namespace ClothCycles
                                 string email = reader.GetString(2);
                                 string password = reader.GetString(3);
                                 string role = reader.GetString(4);
-                                string name = reader.GetString(5); // Ambil nama pengguna
+                                string name = reader.GetString(5); 
 
                                 Account account;
 
-                                        if (password == enteredPassword) // Validate password
+                                        if (password == enteredPassword)
                                         {
                                             // Create object based on role
                                             switch (role)
                                             {
                                                 case "user":
-                                                    account = new User(id, username, email, password, name, 0); // Correctly passing name and points
-                                                    OpenUserForm(account); // Open UsersForm
+                                                    account = new User(id, username, email, password, name, 0); 
+                                                    OpenUserForm(account); 
                                                     break;
                                                 case "craftsman":
-                                                    account = new Craftsman(id, username, email, password, name, 0); // Pass name here
-                                                    OpenCraftsmanForm(account); // Open Craftsman form
+                                                    account = new Craftsman(id, username, email, password, name, 0); 
+                                                    OpenCraftsmanForm(account); 
                                                     break;
                                                 case "admin":
                                                     account = new Admin(id, username, email, password);
-                                                    OpenAdminForm(account);  // Panggil method OpenAdminForm untuk membuka AdminForm
+                                                    OpenAdminForm(account);  
                                                     break;
                                                 default:
                                                     lblErrorMessage.Text = "Invalid role.";
                                                     lblErrorMessage.Visible = true;
                                                     return;
                                             }
-
-                                            // Show welcome message in a pop-up window
-                                            //MessageBox.Show(account.DisplayRoleMessage(), "Login Berhasil");
                                         }
                                         else
                                 {
                                     lblErrorMessage.Text = "Password salah.";
                                     lblErrorMessage.Visible = true;
-                                    errorTimer.Start(); // Start timer to hide message
+                                    errorTimer.Start(); 
                                 }
                             }
                             else
                             {
                                 lblErrorMessage.Text = "Username tidak ditemukan.";
                                 lblErrorMessage.Visible = true;
-                                errorTimer.Start(); // Start timer to hide message
+                                errorTimer.Start(); 
                             }
                         }
                     }
@@ -104,18 +101,18 @@ namespace ClothCycles
 
         private void OpenUserForm(Account account)
         {
-            this.Hide(); // Sembunyikan LoginForm tanpa menutupnya
+            this.Hide(); 
 
-            UsersForm usersForm = new UsersForm(account as User, connString); // Membuat UsersForm dengan connString
-            usersForm.FormClosed += (s, args) => this.Show(); // Tampilkan LoginForm kembali saat UsersForm ditutup
-            usersForm.Show(); // Tampilkan UsersForm
+            UsersForm usersForm = new UsersForm(account as User, connString); 
+            usersForm.FormClosed += (s, args) => this.Show(); 
+            usersForm.Show(); 
         }
 
         private void OpenCraftsmanForm(Account account)
         {
             this.Hide();
 
-            CraftsmanForm craftsmanForm = new CraftsmanForm(account as Craftsman, connString); // Pass connString here
+            CraftsmanForm craftsmanForm = new CraftsmanForm(account as Craftsman, connString); 
             craftsmanForm.FormClosed += (s, args) => this.Show();
             craftsmanForm.Show();
         }
@@ -124,26 +121,25 @@ namespace ClothCycles
         {
             this.Hide();
 
-            AdminForm adminForm = new AdminForm(account as Admin, connString); // Pass the Admin object and connection string
+            AdminForm adminForm = new AdminForm(account as Admin, connString); 
             adminForm.FormClosed += (s, args) => this.Show();
             adminForm.Show();
         }
 
         private void btnSignUp_Click(object sender, EventArgs e)
         {
-            this.Hide(); // Hide LoginForm
+            this.Hide(); 
 
             using (SignUpForm signUpForm = new SignUpForm())
             {
-                signUpForm.ShowDialog(); // Open SignUpForm as a modal dialog
+                signUpForm.ShowDialog();
             }
 
-            this.Show(); // Show LoginForm again after SignUpForm is closed
+            this.Show(); 
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
-            // You can leave this empty or add functionality if needed
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -153,12 +149,10 @@ namespace ClothCycles
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
-            // Optional: Any initialization code can go here.
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            // Optional: Any functionality for the picture box can go here.
         }
     }
 }

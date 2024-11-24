@@ -7,8 +7,8 @@ namespace ClothCycles
 {
     public partial class UsersForm : Form
     {
-        private User currentUser; // Store the current user
-        private NpgsqlConnection conn; // Database connection
+        private User currentUser;
+        private NpgsqlConnection conn; 
 
         // List of material types
         private readonly List<string> materialTypes = new List<string>
@@ -19,18 +19,18 @@ namespace ClothCycles
             "Polyester",
             "Linen",
             "Rayon"
-            // Tambahkan tipe material lain sesuai kebutuhan
+            // Bisa Tambah Material Lain
         };
 
         public UsersForm(User user, string connString)
         {
             InitializeComponent();
             currentUser = user;
-            conn = new NpgsqlConnection(connString); // Buat koneksi baru dengan connString
-            conn.Open(); // Buka koneksi di sini atau di setiap metode saat diperlukan
+            conn = new NpgsqlConnection(connString); 
+            conn.Open(); 
 
-            LoadMaterialTypes(); // Load material types to ComboBox
-            LoadUploadedItems(); // Load items menggunakan koneksi baru
+            LoadMaterialTypes(); 
+            LoadUploadedItems(); 
         }
 
         private void UsersForm_Load(object sender, EventArgs e)
@@ -38,33 +38,31 @@ namespace ClothCycles
             LoadUploadedItems();
         }
 
-        // Method to load material types into ComboBox
         private void LoadMaterialTypes()
         {
-            cmbMaterialType.Items.Clear(); // Clear existing items
+            cmbMaterialType.Items.Clear(); 
 
             foreach (var type in materialTypes)
             {
-                cmbMaterialType.Items.Add(type); // Add each material type to ComboBox
+                cmbMaterialType.Items.Add(type); 
             }
 
             if (cmbMaterialType.Items.Count > 0)
-                cmbMaterialType.SelectedIndex = 0; // Set default selected item (optional)
+                cmbMaterialType.SelectedIndex = 0;
         }
 
-        // Method to load uploaded items from the database
         private void LoadUploadedItems()
         {
             try
             {
                 if (conn.State != System.Data.ConnectionState.Open)
                 {
-                    conn.Open(); // Ensure connection is open before loading items
+                    conn.Open(); 
                 }
 
-                currentUser.LoadUploadedItems(conn); // Load items from database
+                currentUser.LoadUploadedItems(conn); 
 
-                dataGridViewItems.Rows.Clear(); // Clear existing rows from DataGridView
+                dataGridViewItems.Rows.Clear(); 
 
                 foreach (var item in currentUser.UploadedItems)
                 {
@@ -77,27 +75,26 @@ namespace ClothCycles
             }
         }
 
-        // Event handler for button to upload a new item
         private void btnPostItem_Click(object sender, EventArgs e)
         {
-            string materialType = cmbMaterialType.SelectedItem.ToString(); // Get selected material type
-            string modelName = txtItemName.Text.Trim(); // Get item name from TextBox
-            string description = txtDescription.Text.Trim(); // Get description from TextBox
+            string materialType = cmbMaterialType.SelectedItem.ToString(); 
+            string modelName = txtItemName.Text.Trim(); 
+            string description = txtDescription.Text.Trim(); 
             int quantity;
 
             if (!int.TryParse(txtQuantity.Text.Trim(), out quantity) || quantity <= 0)
             {
-                MessageBox.Show("Please enter a valid quantity."); // Show error if quantity is invalid
+                MessageBox.Show("Please enter a valid quantity."); 
                 return;
             }
 
-            Item newItem = new Item(0, materialType, modelName, description, quantity, currentUser); // Create new item
+            Item newItem = new Item(0, materialType, modelName, description, quantity, currentUser); 
 
             try
             {
-                currentUser.UploadItem(newItem, conn); // Upload item to database
-                MessageBox.Show("Item posted successfully!"); // Show success message
-                LoadUploadedItems(); // Refresh the list of uploaded items
+                currentUser.UploadItem(newItem, conn); 
+                MessageBox.Show("Item posted successfully!"); 
+                LoadUploadedItems(); 
             }
             catch (Exception ex)
             {
@@ -108,11 +105,11 @@ namespace ClothCycles
 
         private void btnGoToTransactions_Click_1(object sender, EventArgs e)
         {
-            this.Hide(); // Hide UsersForm
+            this.Hide(); 
 
             UsersTransactionForm transactionForm = new UsersTransactionForm(currentUser, conn);
-            transactionForm.FormClosed += (s, args) => this.Show(); // Tampilkan LoginForm kembali saat UsersForm ditutup
-            transactionForm.Show(); // Show UsersTransactionForm
+            transactionForm.FormClosed += (s, args) => this.Show(); 
+            transactionForm.Show(); 
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -124,11 +121,10 @@ namespace ClothCycles
             }
 
             var selectedRow = dataGridViewItems.SelectedRows[0];
-            var itemModel = selectedRow.Cells[0].Value.ToString(); // Ambil nama model item dari kolom pertama
+            var itemModel = selectedRow.Cells[0].Value.ToString();
 
             try
             {
-                // Cari item yang sesuai berdasarkan nama model
                 var itemToDelete = currentUser.UploadedItems.Find(item => item.Model == itemModel);
 
                 if (itemToDelete == null)
@@ -137,12 +133,10 @@ namespace ClothCycles
                     return;
                 }
 
-                // Hapus item dari database
                 currentUser.DeleteItem(itemToDelete, conn);
 
                 MessageBox.Show("Item deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Refresh tampilan DataGridView
                 LoadUploadedItems();
             }
             catch (Exception ex)

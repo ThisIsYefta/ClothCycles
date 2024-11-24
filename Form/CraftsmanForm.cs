@@ -9,7 +9,7 @@ namespace ClothCycles
     {
         private Craftsman currentCraftsman;
         private NpgsqlConnection conn;
-        private string connectionString; // Tambahkan connectionString sebagai properti kelas
+        private string connectionString;
 
 
         public CraftsmanForm(Craftsman craftsman, string connString)
@@ -90,12 +90,12 @@ namespace ClothCycles
             {
                 if (conn.State != System.Data.ConnectionState.Open)
                 {
-                    conn.Open(); // Ensure connection is open before loading items
+                    conn.Open(); 
                 }
 
-                currentCraftsman.LoadUploadedProducts(conn); // Load items from database
+                currentCraftsman.LoadUploadedProducts(conn); 
 
-                dataGridViewProducts.Rows.Clear(); // Clear existing rows from DataGridView
+                dataGridViewProducts.Rows.Clear(); 
 
                 foreach (var product in currentCraftsman.UploadedProducts)
                 {
@@ -113,8 +113,8 @@ namespace ClothCycles
             this.Hide(); // Hide UsersForm
 
             CraftsmanTransactionForm craftsmantransactionForm = new CraftsmanTransactionForm(currentCraftsman, conn);
-            craftsmantransactionForm.FormClosed += (s, args) => this.Show(); // Tampilkan LoginForm kembali saat UsersForm ditutup
-            craftsmantransactionForm.Show(); // Show UsersTransactionForm
+            craftsmantransactionForm.FormClosed += (s, args) => this.Show(); 
+            craftsmantransactionForm.Show(); 
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -126,7 +126,7 @@ namespace ClothCycles
             }
 
             var selectedRow = dataGridViewProducts.SelectedRows[0];
-            var productName = selectedRow.Cells[0].Value.ToString(); // Ambil nama produk dari kolom pertama
+            var productName = selectedRow.Cells[0].Value.ToString();
 
             try
             {
@@ -144,7 +144,6 @@ namespace ClothCycles
 
                 MessageBox.Show("Product deleted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Refresh tampilan DataGridView
                 LoadUploadedProducts();
             }
             catch (Exception ex)

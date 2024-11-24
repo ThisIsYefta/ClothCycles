@@ -5,21 +5,21 @@ using Npgsql;
 public class User : Account
 {
     public int Points { get; set; }
-    public List<Item> UploadedItems { get; private set; } // List to store uploaded items
-    public string Name { get; private set; } // Nama pengguna
+    public List<Item> UploadedItems { get; private set; }
+    public string Name { get; private set; } 
     public int userid { get; set; }
 
     public User(int id, string username, string email, string password, string name, int points)
         : base(id, username, email, password, "user")
     {
         Points = points;
-        Name = name; // Inisialisasi Name
-        UploadedItems = new List<Item>(); // Initialize the list of uploaded items
+        Name = name; 
+        UploadedItems = new List<Item>(); 
     }
 
     public void LoadUploadedItems(NpgsqlConnection conn)
     {
-        UploadedItems.Clear(); // Clear existing items
+        UploadedItems.Clear(); 
 
         string query = "SELECT * FROM Items WHERE UserId = @userId";
 
@@ -47,7 +47,8 @@ public class User : Account
 
     public void UploadItem(Item item, NpgsqlConnection conn)
     {
-        string query = "INSERT INTO Items (MaterialType, Model, Description, Quantity, UserId) VALUES (@materialType, @model, @description, @quantity, @userId)";
+        string query = "INSERT INTO Items (MaterialType, Model, Description, Quantity, UserId) " +
+            "VALUES (@materialType, @model, @description, @quantity, @userId)";
 
         using (var cmd = new NpgsqlCommand(query, conn))
         {
@@ -65,16 +66,15 @@ public class User : Account
 
     public void DeleteItem(Item item, NpgsqlConnection conn)
     {
-        string query = "DELETE FROM items WHERE itemid = @itemid"; // Ganti 'items' dengan nama tabel yang sesuai
+        string query = "DELETE FROM items WHERE itemid = @itemid";
 
         using (var cmd = new NpgsqlCommand(query, conn))
         {
-            cmd.Parameters.AddWithValue("itemid", item.ItemID); // Gunakan ID item untuk menghapus
+            cmd.Parameters.AddWithValue("itemid", item.ItemID);
 
-            cmd.ExecuteNonQuery(); // Eksekusi query
+            cmd.ExecuteNonQuery(); 
         }
 
-        // Hapus item dari daftar UploadedItems
         UploadedItems.Remove(item);
     }
 

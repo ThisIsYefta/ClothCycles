@@ -15,7 +15,7 @@ namespace ClothCycles
         }
 
         private NpgsqlConnection conn;
-        string connstring = "Host=localhost;Port=5432;Username=postgres;Password=Yefta21n0404;Database=ClothCycles;Include Error Detail=true"; // Ganti dengan nama database Anda
+        string connstring = "Host=localhost;Port=5432;Username=postgres;Password=Yefta21n0404;Database=ClothCycles;Include Error Detail=true"; 
         public DataTable dt;
         public static NpgsqlCommand cmd;
         private string sql = null;
@@ -25,11 +25,9 @@ namespace ClothCycles
         {
             conn = new NpgsqlConnection(connstring);
 
-            // Initialize ComboBox for role selection
             cmbRole.Items.AddRange(new string[] { "user", "craftsman", "admin" });
-            cmbRole.DropDownStyle = ComboBoxStyle.DropDownList; // Prevents manual input
+            cmbRole.DropDownStyle = ComboBoxStyle.DropDownList; 
 
-            // Ensure columns are added only once to prevent duplicates
             if (dataGridViewAccounts.Columns.Count == 0)
             {
                 dataGridViewAccounts.Columns.Add("username", "Username");
@@ -37,21 +35,20 @@ namespace ClothCycles
                 dataGridViewAccounts.Columns.Add("role", "Role");
                 dataGridViewAccounts.Columns.Add("name", "Name");
                 dataGridViewAccounts.Columns.Add("id", "ID");
-                dataGridViewAccounts.Columns["id"].Visible = false; // Hide ID column if not needed
+                dataGridViewAccounts.Columns["id"].Visible = false;
             }
 
-            LoadData(); // Load existing accounts
+            LoadData(); 
         }
 
 
         private void LoadData()
         {
             dt = ReadAccounts();
-            dataGridViewAccounts.Rows.Clear();  // Clear rows sebelumnya
+            dataGridViewAccounts.Rows.Clear();  
 
             foreach (DataRow row in dt.Rows)
             {
-                // Tambahkan baris baru pada DataGridView
                 int rowIndex = dataGridViewAccounts.Rows.Add();
                 DataGridViewRow rowData = dataGridViewAccounts.Rows[rowIndex];
 
@@ -59,7 +56,7 @@ namespace ClothCycles
                 rowData.Cells["email"].Value = row["email"];
                 rowData.Cells["role"].Value = row["role"];
                 rowData.Cells["name"].Value = row["name"];
-                rowData.Tag = row["id"];  // Simpan ID untuk referensi
+                rowData.Tag = row["id"]; 
             }
         }
 
@@ -69,7 +66,7 @@ namespace ClothCycles
             try
             {
                 conn.Open();
-                sql = "SELECT * FROM account"; // Mengambil semua data dari tabel account
+                sql = "SELECT * FROM account"; 
                 cmd = new NpgsqlCommand(sql, conn);
                 NpgsqlDataReader rd = cmd.ExecuteReader();
                 dataTable.Load(rd);
@@ -97,7 +94,7 @@ namespace ClothCycles
 
         private bool InsertAccount(string username, string email, string password, string role, string name)
         {
-            int accountId = 0; // Deklarasikan variabel untuk menyimpan accountId
+            int accountId = 0; 
             try
             {
                 conn.Open();
@@ -105,14 +102,12 @@ namespace ClothCycles
                 cmd = new NpgsqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("_username", username);
                 cmd.Parameters.AddWithValue("_email", email);
-                cmd.Parameters.AddWithValue("_password", password); // Pastikan untuk hashing password sebelum menyimpan
+                cmd.Parameters.AddWithValue("_password", password); 
                 cmd.Parameters.AddWithValue("_role", role);
                 cmd.Parameters.AddWithValue("_name", name);
 
-                // Eksekusi query dan ambil accountId
                 accountId = (int)cmd.ExecuteScalar();
 
-                // Tambahkan data ke tabel spesifik berdasarkan role
                 if (role == "craftsman")
                 {
                     string insertCraftsmanQuery = @"
@@ -124,7 +119,7 @@ namespace ClothCycles
                         cmd.Parameters.AddWithValue("email", email);
                         cmd.Parameters.AddWithValue("password", password);
                         cmd.Parameters.AddWithValue("name", name);
-                        cmd.Parameters.AddWithValue("earnedPoints", 0); // Default earned points
+                        cmd.Parameters.AddWithValue("earnedPoints", 0);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -134,20 +129,19 @@ namespace ClothCycles
                     using (NpgsqlCommand insertUserCmd = new NpgsqlCommand(insertUserQuery, conn))
                     {
                         insertUserCmd.Parameters.AddWithValue("accountid", accountId);
-                        insertUserCmd.Parameters.AddWithValue("points", 0); // Default points adalah 0
-                        insertUserCmd.Parameters.AddWithValue("name", name); // Tambahkan nilai name
+                        insertUserCmd.Parameters.AddWithValue("points", 0); 
+                        insertUserCmd.Parameters.AddWithValue("name", name); 
 
                         insertUserCmd.ExecuteNonQuery();
                     }
                 }
                 else if (role == "admin")
                 {
-                    // Simpan data untuk admin
                     string insertAdminQuery = "INSERT INTO Admins (accountid, name) VALUES (@accountid, @name)";
                     using (NpgsqlCommand insertAdminCmd = new NpgsqlCommand(insertAdminQuery, conn))
                     {
                         insertAdminCmd.Parameters.AddWithValue("accountid", accountId);
-                        insertAdminCmd.Parameters.AddWithValue("name", name); // Tambahkan nama admin
+                        insertAdminCmd.Parameters.AddWithValue("name", name); 
 
                         insertAdminCmd.ExecuteNonQuery();
                     }
@@ -170,17 +164,13 @@ namespace ClothCycles
         {
             if (dataGridViewAccounts.SelectedRows.Count > 0)
             {
-                // Dapatkan baris yang dipilih
                 DataGridViewRow selectedRow = dataGridViewAccounts.SelectedRows[0];
 
-                // Isi TextBox dengan nilai yang ada di baris yang dipilih
                 txtUsername.Text = selectedRow.Cells["username"].Value.ToString();
                 txtEmail.Text = selectedRow.Cells["email"].Value.ToString();
-                //txtRole.Text = selectedRow.Cells["role"].Value.ToString();
                 txtName.Text = selectedRow.Cells["name"].Value.ToString();
 
-                // Simpan ID untuk referensi saat update atau delete
-                selectedItem = (ListViewItem)selectedRow.Tag; // Simpan ID untuk update/delete
+                selectedItem = (ListViewItem)selectedRow.Tag; 
             }
         }
 
@@ -223,7 +213,6 @@ namespace ClothCycles
                 // Cek role dan lakukan pembaruan data berdasarkan role
                 if (roleFromDB == "admin")
                 {
-                    // Jika role admin, update data dari tabel users yang terkait
                     sql = @"UPDATE admins SET name = :_newName WHERE name = :_name";
                     cmd = new NpgsqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("_name", name);
@@ -232,29 +221,26 @@ namespace ClothCycles
                 }
                 else if (roleFromDB == "user")
                 {
-                    // Jika role user, update data dari tabel lain sesuai kebutuhan
                     sql = @"UPDATE users SET name = :_newName WHERE name = :_name";
                     cmd = new NpgsqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("_name", name);
                     cmd.Parameters.AddWithValue("_newName", newName);
-                    cmd.ExecuteNonQuery();  // Update data name di tabel users
+                    cmd.ExecuteNonQuery(); 
                 }
                 else if (roleFromDB == "craftsman")
                 {
-                    // Jika role craftsman, update data di tabel craftsmen
                     sql = @"UPDATE craftsmen SET username = :_username, email = :_email, password = :_password, name = :_newName WHERE name = :_name";
                     cmd = new NpgsqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("_name", name);  // Gunakan name untuk menemukan record yang akan diupdate
+                    cmd.Parameters.AddWithValue("_name", name);  
                     cmd.Parameters.AddWithValue("_username", username);
                     cmd.Parameters.AddWithValue("_email", email);
-                    cmd.Parameters.AddWithValue("_password", password); // Pastikan untuk hashing password sebelum menyimpan
+                    cmd.Parameters.AddWithValue("_password", password); 
                     cmd.Parameters.AddWithValue("_newName", newName);
 
-                    cmd.ExecuteNonQuery();  // Update data craftsmen
+                    cmd.ExecuteNonQuery();  
                 }
                 else
                 {
-                    // Jika role lainnya, Anda bisa menyesuaikan
                     MessageBox.Show("Role tidak dikenali", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
@@ -262,14 +248,14 @@ namespace ClothCycles
                 // Lanjutkan pembaruan data di tabel account
                 sql = @"UPDATE account SET username = :_username, email = :_email, password = :_password, role = :_role, name = :_newName WHERE name = :_name";
                 cmd = new NpgsqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("_name", name);  // Gunakan name untuk menemukan record yang akan diupdate
+                cmd.Parameters.AddWithValue("_name", name);  
                 cmd.Parameters.AddWithValue("_username", username);
                 cmd.Parameters.AddWithValue("_email", email);
-                cmd.Parameters.AddWithValue("_password", password); // Pastikan untuk hashing password sebelum menyimpan
+                cmd.Parameters.AddWithValue("_password", password); 
                 cmd.Parameters.AddWithValue("_role", role);
                 cmd.Parameters.AddWithValue("_newName", newName);
 
-                return cmd.ExecuteNonQuery() == 1; // Mengembalikan true jika satu baris terpengaruh
+                return cmd.ExecuteNonQuery() == 1; 
             }
             catch (Exception ex)
             {
@@ -284,7 +270,6 @@ namespace ClothCycles
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            // Pastikan ada baris yang dipilih
             if (dataGridViewAccounts.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Silakan pilih akun yang akan dihapus", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -299,7 +284,6 @@ namespace ClothCycles
             if (MessageBox.Show($"Apakah Anda yakin ingin menghapus akun {username}?", "Konfirmasi Hapus",
                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                // Panggil metode DeleteAccount dengan username
                 if (DeleteAccount(username, name))
                 {
                     MessageBox.Show("Akun berhasil dihapus", "Well Done!", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -330,31 +314,27 @@ namespace ClothCycles
                 // Cek role dan lakukan penghapusan berdasarkan role
                 if (role == "admin")
                 {
-                    // Jika role admin, hapus data dari tabel users yang terkait
                     sql = @"DELETE FROM admins WHERE name = :_name";
                     cmd = new NpgsqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("_name", name);
-                    cmd.ExecuteNonQuery();  // Hapus referensi di users
+                    cmd.ExecuteNonQuery();  
                 }
                 else if (role == "user")
                 {
-                    // Jika role user, hapus data dari tabel lain sesuai kebutuhan
                     sql = @"DELETE FROM users WHERE name = :_name";
                     cmd = new NpgsqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("_name", name);
-                    cmd.ExecuteNonQuery();  // Hapus data user
+                    cmd.ExecuteNonQuery();  
                 }
                 else if (role == "craftsman")
                 {
-                    // Jika role user, hapus data dari tabel lain sesuai kebutuhan
                     sql = @"DELETE FROM craftsmen WHERE name = :_name";
                     cmd = new NpgsqlCommand(sql, conn);
                     cmd.Parameters.AddWithValue("_name", name);
-                    cmd.ExecuteNonQuery();  // Hapus data user
+                    cmd.ExecuteNonQuery(); 
                 }
                 else
                 {
-                    // Jika role lainnya, Anda bisa menyesuaikan
                     MessageBox.Show("Role tidak dikenali", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
@@ -364,7 +344,7 @@ namespace ClothCycles
                 cmd = new NpgsqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("_username", username);
 
-                return cmd.ExecuteNonQuery() == 1; // Mengembalikan true jika satu baris terpengaruh
+                return cmd.ExecuteNonQuery() == 1; 
             }
             catch (Exception ex)
             {
@@ -382,7 +362,7 @@ namespace ClothCycles
             txtName.Clear();
             txtEmail.Clear();
             txtPassword.Clear();
-            cmbRole.SelectedIndex = -1; // Clear selected item in ComboBox
+            cmbRole.SelectedIndex = -1; 
             txtUsername.Clear();
         }
     }

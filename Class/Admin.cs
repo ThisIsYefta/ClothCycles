@@ -6,9 +6,4 @@ public class Admin : Account
         : base(id, username, email, password, "admin")
     {
     }
-
-    public override string DisplayRoleMessage()
-    {
-        return "Welcome, Admin! You have administrative privileges.";
-    }
 }

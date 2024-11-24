@@ -11,14 +11,14 @@ namespace ClothCycles
         private NpgsqlConnection conn;
         private List<Item> selectedItems;
         private Craftsman currentCraftsman;
-        private Item selectedItem; // Item currently selected in the grid
+        private Item selectedItem; 
 
         public CraftsmanTransactionForm(Craftsman craftsman, NpgsqlConnection connection)
         {
             InitializeComponent();
             currentCraftsman = craftsman;
             conn = connection;
-            selectedItems = new List<Item>(); // Ensure it's initialized
+            selectedItems = new List<Item>(); 
         }
 
         private void CraftsmanTransactionForm_Load(object sender, EventArgs e)
@@ -84,18 +84,16 @@ namespace ClothCycles
                         string model = reader.GetString(2);
                         string description = reader.GetString(3);
                         int quantity = reader.GetInt32(4);
-                        int userId = reader.GetInt32(5); // Mendapatkan userid (-1 jika null)
-                        string userName = reader.GetString(6); // Mendapatkan nama pengguna (atau 'Unknown' jika null)
+                        int userId = reader.GetInt32(5); 
+                        string userName = reader.GetString(6); 
 
                         // Validasi untuk memastikan userid dan userName tidak bernilai default
                         if (userId != -1 && userName != "Unknown")
                         {
-                            // Jika data pengguna valid, tampilkan di UI
                             dataGridViewItem.Rows.Add(itemId, materialType, model, description, quantity, userId, userName);
                         }
                         else
                         {
-                            // Jika tidak ada user terkait, tampilkan nilai default
                             dataGridViewItem.Rows.Add(itemId, materialType, model, description, quantity, "No user", "No user");
                         }
                     }
@@ -125,7 +123,6 @@ namespace ClothCycles
                 // Display the selected item details in the UI
                 MessageBox.Show($"Selected Item: {selectedItem.Model} with available quantity: {selectedItem.Quantity}");
 
-                // Set the quantity textbox to the available quantity of the selected item
                 txtNominal.Text = selectedItem.Quantity.ToString();
             }
         }
@@ -262,9 +259,9 @@ namespace ClothCycles
 
                     // Record the transaction
                     string insertTransactionQuery = @"
-            INSERT INTO craftsman_item_transactions 
-            (craftsman_id, item_id, quantity_used, points_awarded)
-            VALUES (@craftsmanId, @itemId, @quantityUsed, @pointsAwarded)";
+                        INSERT INTO craftsman_item_transactions 
+                        (craftsman_id, item_id, quantity_used, points_awarded)
+                        VALUES (@craftsmanId, @itemId, @quantityUsed, @pointsAwarded)";
                     using (var cmd = new NpgsqlCommand(insertTransactionQuery, conn))
                     {
                         cmd.Parameters.AddWithValue("craftsmanId", craftsmanId);
@@ -291,22 +288,18 @@ namespace ClothCycles
 
         private void dataGridViewSelectedItem_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Placeholder for event logic (can be left empty if not needed)
         }
 
         private void lblAddress_Click(object sender, EventArgs e)
         {
-            // Placeholder for event logic (can be left empty if not needed)
         }
 
         private void txtAddress_TextChanged(object sender, EventArgs e)
         {
-            // Placeholder for event logic (can be left empty if not needed)
         }
 
         private void txtNominal_TextChanged(object sender, EventArgs e)
         {
-            // Placeholder for event logic (can be left empty if not needed)
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -319,18 +312,14 @@ namespace ClothCycles
 
             try
             {
-                // Get the selected row index
                 var selectedRow = dataGridViewSelectedItem.SelectedRows[0];
                 int selectedItemId = Convert.ToInt32(selectedRow.Cells["itemid"].Value);
 
-                // Find the item in the selectedItems list
                 var itemToRemove = selectedItems.Find(item => item.ItemID == selectedItemId);
                 if (itemToRemove != null)
                 {
-                    // Remove the item from the selectedItems list
                     selectedItems.Remove(itemToRemove);
 
-                    // Remove the item from the dataGridViewSelectedItem
                     dataGridViewSelectedItem.Rows.Remove(selectedRow);
 
                     MessageBox.Show($"Item '{itemToRemove.Model}' removed successfully.");

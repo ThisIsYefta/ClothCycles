@@ -128,7 +128,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Class\Transaction.cs" />
     <Compile Include="Class\User.cs" />
-    <Compile Include="Class\Voucher.cs" />
     <Compile Include="Form\SignUpForm.cs">
       <SubType>Form</SubType>
     </Compile>

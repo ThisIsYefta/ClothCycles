@@ -8,9 +8,9 @@ namespace ClothCycles
 {
     public partial class UsersTransactionForm : Form
     {
-        private User currentUser; // Untuk menyimpan data user yang sedang login
-        private NpgsqlConnection conn; // Koneksi ke database
-        private Product selectedProduct; // Produk yang dipilih pengguna
+        private User currentUser; 
+        private NpgsqlConnection conn; 
+        private Product selectedProduct; 
 
         public UsersTransactionForm(User user, NpgsqlConnection connection)
         {
@@ -26,7 +26,7 @@ namespace ClothCycles
             {
                 MessageBox.Show("Database connection is not available.");
                 Close();
-                return; // Hentikan eksekusi jika koneksi tidak tersedia
+                return; 
             }
 
             LoadUserPoints();
@@ -57,7 +57,6 @@ namespace ClothCycles
         {
             try
             {
-                // Pastikan kolom sudah ditambahkan
                 dataGridViewProduct.Columns.Clear();
                 dataGridViewProduct.Columns.Add("Product ID", "Product ID");
                 dataGridViewProduct.Columns.Add("Name", "Name");
@@ -76,7 +75,7 @@ namespace ClothCycles
                 using (NpgsqlCommand cmd = new NpgsqlCommand(query, conn))
                 using (NpgsqlDataReader reader = cmd.ExecuteReader())
                 {
-                    dataGridViewProduct.Rows.Clear(); // Kosongkan DataGridView
+                    dataGridViewProduct.Rows.Clear(); 
 
                     while (reader.Read())
                     {
@@ -86,16 +85,13 @@ namespace ClothCycles
                         decimal price = reader.GetDecimal(3);
                         int stock = reader.GetInt32(4);
 
-                        // Ambil informasi craftsman jika tersedia
                         int craftsmanId = reader["Craftsman ID"] != DBNull.Value ? Convert.ToInt32(reader["Craftsman ID"]) : 0;
                         string craftsmanName = reader["Craftsman Name"] != DBNull.Value ? reader["Craftsman Name"].ToString() : null;
 
                         Craftsman craftsman = craftsmanId > 0 ? new Craftsman(craftsmanId, "", "", "", craftsmanName, 0) : null;
 
-                        // Buat objek produk
                         Product product = new Product(productId, name, description, price, stock, craftsman);
 
-                        // Tambahkan ke DataGridView
                         dataGridViewProduct.Rows.Add(product.product_id, product.Name, product.Description, product.Price, product.Stock);
                     }
                 }
@@ -220,17 +216,14 @@ namespace ClothCycles
         {
             try
             {
-                // Validasi poin tidak melebihi total harga
                 if (pointsUsed > totalPrice)
                 {
                     MessageBox.Show("Jumlah poin yang digunakan tidak dapat melebihi total harga.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                // Menghitung harga setelah diskon poin
                 decimal discountedPrice = totalPrice - pointsUsed;
 
-                // Cari user_id berdasarkan accountid
                 int userId = GetUserIdByAccountId(currentUser.Accountid);  // Ambil userid berdasarkan accountid
 
                 if (userId == -1)
@@ -239,7 +232,6 @@ namespace ClothCycles
                     return;
                 }
 
-                // Get craftsman ID using selected product's ID
                 int craftsmanId = GetCraftsmanIdByProductId(selectedProduct.product_id);
 
                 if (craftsmanId == -1)
@@ -248,28 +240,26 @@ namespace ClothCycles
                     return;
                 }
 
-                // Query untuk menyimpan transaksi
                 string insertTransactionQuery = @"
                     INSERT INTO transactions (user_id, product_id, craftsman_id, points_used, quantity, total_price, address, transaction_date) 
                     VALUES (@userId, @productId, @craftsmanId, @pointsUsed, @quantity, @totalPrice, @address, @transactionDate)";
 
                 using (var cmd = new NpgsqlCommand(insertTransactionQuery, conn))
                 {
-                    cmd.Parameters.AddWithValue("userId", userId); // Gunakan userid yang valid
+                    cmd.Parameters.AddWithValue("userId", userId); 
                     cmd.Parameters.AddWithValue("productId", selectedProduct.product_id);
-                    cmd.Parameters.AddWithValue("craftsmanId", craftsmanId); // Use the retrieved craftsman ID
+                    cmd.Parameters.AddWithValue("craftsmanId", craftsmanId); 
                     cmd.Parameters.AddWithValue("pointsUsed", pointsUsed);
                     cmd.Parameters.AddWithValue("quantity", quantity);
-                    cmd.Parameters.AddWithValue("totalPrice", discountedPrice); // Gunakan harga setelah diskon
+                    cmd.Parameters.AddWithValue("totalPrice", discountedPrice); 
                     cmd.Parameters.AddWithValue("address", txtAddress.Text);
-                    cmd.Parameters.AddWithValue("transactionDate", DateTime.UtcNow); // Waktu transaksi
+                    cmd.Parameters.AddWithValue("transactionDate", DateTime.UtcNow); 
 
-                    // Eksekusi query untuk menyimpan transaksi
                     cmd.ExecuteNonQuery();
                 }
 
-                UpdateProductStock(quantity); // Update product stock after successful transaction insertion
-                UpdateUserPoints(pointsUsed); // Update user points after successful transaction insertion
+                UpdateProductStock(quantity); 
+                UpdateUserPoints(pointsUsed); 
                 UpdateCraftsmanEarnedPoints(craftsmanId, pointsUsed);
 
 
@@ -277,7 +267,6 @@ namespace ClothCycles
             }
             catch (Exception ex)
             {
-                // Menangani jika terjadi kesalahan pada proses transaksi
                 MessageBox.Show($"Terjadi kesalahan: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -297,7 +286,7 @@ namespace ClothCycles
                 }
                 else
                 {
-                    return -1;  // Jika tidak ditemukan, kembalikan -1
+                    return -1; 
                 }
             }
         }
@@ -311,18 +300,18 @@ namespace ClothCycles
                 var result = cmd.ExecuteScalar();
                 if (result != null && result != DBNull.Value)
                 {
-                    return Convert.ToInt32(result); // Return the craftsman ID found
+                    return Convert.ToInt32(result); 
                 }
                 else
                 {
-                    return -1; // If not found, return -1
+                    return -1; 
                 }
             }
         }
 
         private void UpdateCraftsmanEarnedPoints(int craftsmanId, int pointsUsed)
         {
-            if (craftsmanId > 0) // Pastikan craftsmanId valid
+            if (craftsmanId > 0) 
             {
                 string updateCraftsmanPointsQuery = "UPDATE craftsmen SET earned_points = earned_points + @points WHERE id = @craftsmanId";
 
@@ -356,7 +345,7 @@ namespace ClothCycles
             if (!int.TryParse(textBox.Text, out _))
             {
                 MessageBox.Show($"Please enter a valid number for {textBox.Name}.");
-                textBox.Text = "0"; // Reset to default value
+                textBox.Text = "0"; 
             }
         }
 

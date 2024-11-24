@@ -11,16 +11,14 @@ namespace ClothCycles
         public SignUpForm()
         {
             InitializeComponent();
-            // Inisialisasi ComboBox dengan role
             cmbRole.Items.Add("user");
             cmbRole.Items.Add("craftsman");
             cmbRole.Items.Add("admin");
-            cmbRole.SelectedIndex = 0; // Default ke 'user'
+            cmbRole.SelectedIndex = 0; 
         }
 
         private void SignUpForm_Load(object sender, EventArgs e)
         {
-            // Initialize any components or data here if needed
         }
 
         private void btnSignUp_Click(object sender, EventArgs e)
@@ -28,8 +26,8 @@ namespace ClothCycles
             string username = txtUsername.Text.Trim();
             string email = txtEmail.Text.Trim();
             string password = txtPassword.Text.Trim();
-            string name = txtName.Text.Trim(); // Ambil nama dari TextBox
-            string role = cmbRole.SelectedItem.ToString(); // Ambil role dari ComboBox
+            string name = txtName.Text.Trim(); 
+            string role = cmbRole.SelectedItem.ToString(); 
 
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(name))
             {
@@ -41,7 +39,6 @@ namespace ClothCycles
             {
                 conn.Open();
 
-                // Cek apakah username sudah ada
                 string checkQuery = "SELECT COUNT(*) FROM account WHERE username = @username";
                 using (NpgsqlCommand checkCmd = new NpgsqlCommand(checkQuery, conn))
                 {
@@ -55,7 +52,7 @@ namespace ClothCycles
                     }
                 }
 
-                // Insert data ke dalam tabel 'account' terlebih dahulu
+                // Insert data ke dalam tabel 'account'
                 string insertAccountQuery = "INSERT INTO account (username, email, password, role, name) VALUES (@username, @email, @password, @role, @name) RETURNING id";
                 int accountId;
                 using (NpgsqlCommand cmd = new NpgsqlCommand(insertAccountQuery, conn))
@@ -68,7 +65,6 @@ namespace ClothCycles
                     accountId = Convert.ToInt32(cmd.ExecuteScalar());
                 }
 
-                // Insert data ke dalam tabel 'craftsmen' jika role = craftsman
                 if (role == "craftsman")
                 {
                     string insertCraftsmanQuery = @"
@@ -80,8 +76,8 @@ namespace ClothCycles
                         cmd.Parameters.AddWithValue("email", email);
                         cmd.Parameters.AddWithValue("password", password);
                         cmd.Parameters.AddWithValue("name", name);
-                        cmd.Parameters.AddWithValue("earnedPoints", 0); // Default earned points
-                        cmd.Parameters.AddWithValue("accountId", accountId); // Insert the accountid as foreign key
+                        cmd.Parameters.AddWithValue("earnedPoints", 0); 
+                        cmd.Parameters.AddWithValue("accountId", accountId); 
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -92,8 +88,8 @@ namespace ClothCycles
                     using (NpgsqlCommand insertUserCmd = new NpgsqlCommand(insertUserQuery, conn))
                     {
                         insertUserCmd.Parameters.AddWithValue("accountid", accountId);
-                        insertUserCmd.Parameters.AddWithValue("points", 0); // Default points adalah 0
-                        insertUserCmd.Parameters.AddWithValue("name", name); // Tambahkan nilai name
+                        insertUserCmd.Parameters.AddWithValue("points", 0); 
+                        insertUserCmd.Parameters.AddWithValue("name", name); 
 
                         insertUserCmd.ExecuteNonQuery();
                     }
@@ -106,14 +102,14 @@ namespace ClothCycles
                     using (NpgsqlCommand insertAdminCmd = new NpgsqlCommand(insertAdminQuery, conn))
                     {
                         insertAdminCmd.Parameters.AddWithValue("accountid", accountId);
-                        insertAdminCmd.Parameters.AddWithValue("name", name); // Tambahkan nama admin
+                        insertAdminCmd.Parameters.AddWithValue("name", name);
 
                         insertAdminCmd.ExecuteNonQuery();
                     }
                 }
 
                 MessageBox.Show("Akun berhasil dibuat!");
-                this.Close(); // Close sign-up form
+                this.Close();
             }
         }
     }

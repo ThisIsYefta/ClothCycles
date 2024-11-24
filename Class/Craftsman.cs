@@ -5,30 +5,25 @@ using Npgsql;
 
 public class Craftsman : Account
 {
-    public int id { get; private set; } // Menambahkan properti id
+    public int id { get; private set; } 
     public int EarnedPoints { get; private set; }
-    public List<Product> UploadedProducts { get; private set; } // List untuk menyimpan produk yang diunggah
-    public string Name { get; private set; } // Nama pengguna
+    public List<Product> UploadedProducts { get; private set; } 
+    public string Name { get; private set; } 
 
     public Craftsman(int id, string username, string email, string password, string name, int earnedPoints)
         : base(id, username, email, password, "craftsman")
     {
-        this.id = id; // Menginisialisasi id
+        this.id = id; 
         EarnedPoints = earnedPoints;
-        Name = name; // Inisialisasi Name
-        UploadedProducts = new List<Product>(); // Inisialisasi daftar produk yang diunggah
-    }
-
-    public override string DisplayRoleMessage()
-    {
-        return "Welcome, Craftsman! You can view and manage your points.";
+        Name = name; 
+        UploadedProducts = new List<Product>(); 
     }
 
     public void LoadUploadedProducts(NpgsqlConnection conn)
     {
-        UploadedProducts.Clear(); // Clear existing items
+        UploadedProducts.Clear(); 
 
-        string query = "SELECT * FROM product WHERE accountid = @craftsmanId"; // Adjust table name to "product"
+        string query = "SELECT * FROM product WHERE accountid = @craftsmanId"; 
 
         using (var cmd = new NpgsqlCommand(query, conn))
         {
@@ -46,6 +41,7 @@ public class Craftsman : Account
                         reader.GetInt32(4),
                         this
                     );
+
                     UploadedProducts.Add(product);
                 }
             }
@@ -83,12 +79,10 @@ public class Craftsman : Account
                 cmd.Parameters.AddWithValue("description", product.Description);
                 cmd.Parameters.AddWithValue("price", product.Price);
                 cmd.Parameters.AddWithValue("stock", product.Stock);
-                cmd.Parameters.AddWithValue("craftsmanid", craftsmanId); // ID dari tabel craftsmen
-                cmd.Parameters.AddWithValue("accountid", Accountid); // ID dari tabel account
+                cmd.Parameters.AddWithValue("craftsmanid", craftsmanId); 
+                cmd.Parameters.AddWithValue("accountid", Accountid); 
                 cmd.ExecuteNonQuery();
             }
-
-            // Tambahkan ke daftar produk yang telah diunggah
             UploadedProducts.Add(product);
         }
         catch (Exception ex)
@@ -99,16 +93,15 @@ public class Craftsman : Account
 
     public void DeleteProduct(Product product, NpgsqlConnection conn)
     {
-        string query = "DELETE FROM product WHERE product_id = @product_id"; // Ganti 'products' dengan nama tabel yang sesuai
+        string query = "DELETE FROM product WHERE product_id = @product_id"; 
 
         using (var cmd = new NpgsqlCommand(query, conn))
         {
-            cmd.Parameters.AddWithValue("product_id", product.product_id); // Gunakan ID produk untuk menghapus
+            cmd.Parameters.AddWithValue("product_id", product.product_id); 
 
-            cmd.ExecuteNonQuery(); // Eksekusi query
+            cmd.ExecuteNonQuery(); 
         }
 
-        // Hapus produk dari daftar UploadedProducts
         UploadedProducts.Remove(product);
     }
 
