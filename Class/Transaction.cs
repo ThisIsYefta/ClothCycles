@@ -11,7 +11,6 @@ public class Transaction
     public string Address { get; set; } 
     public DateTime Date { get; set; } 
 
-    
     public Transaction(int transactionID, Product product, Craftsman craftsman, int pointsUsed, int quantity, decimal totalPrice, string address)
     {
         TransactionID = transactionID;

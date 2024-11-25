@@ -11,7 +11,6 @@ namespace ClothCycles
         private NpgsqlConnection conn;
         private string connectionString;
 
-
         public CraftsmanForm(Craftsman craftsman, string connString)
         {
             InitializeComponent();
@@ -110,7 +109,7 @@ namespace ClothCycles
 
         private void btnGoToTransactions_Click(object sender, EventArgs e)
         {
-            this.Hide(); // Hide UsersForm
+            this.Hide();
 
             CraftsmanTransactionForm craftsmantransactionForm = new CraftsmanTransactionForm(currentCraftsman, conn);
             craftsmantransactionForm.FormClosed += (s, args) => this.Show(); 

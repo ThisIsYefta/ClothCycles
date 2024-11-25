@@ -41,7 +41,6 @@ namespace ClothCycles
             LoadData(); 
         }
 
-
         private void LoadData()
         {
             dt = ReadAccounts();

@@ -83,7 +83,7 @@ namespace ClothCycles
                 }
 
                 else if(role == "user")
-{
+                {
                     string insertUserQuery = $"INSERT INTO {role}s (accountid, points, name) VALUES (@accountid, @points, @name)";
                     using (NpgsqlCommand insertUserCmd = new NpgsqlCommand(insertUserQuery, conn))
                     {
@@ -97,7 +97,6 @@ namespace ClothCycles
 
                 else if (role == "admin")
                 {
-                    // Simpan data untuk admin
                     string insertAdminQuery = "INSERT INTO Admins (accountid, name) VALUES (@accountid, @name)";
                     using (NpgsqlCommand insertAdminCmd = new NpgsqlCommand(insertAdminQuery, conn))
                     {

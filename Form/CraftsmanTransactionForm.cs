@@ -191,7 +191,6 @@ namespace ClothCycles
 
             try
             {
-                // Ensure connection is open
                 if (conn.State != ConnectionState.Open)
                 {
                     conn.Open();
@@ -252,7 +251,7 @@ namespace ClothCycles
                     string updateUserPointsQuery = "UPDATE users SET points = points + @points WHERE accountid = @accountId";
                     using (var cmd = new NpgsqlCommand(updateUserPointsQuery, conn))
                     {
-                        cmd.Parameters.AddWithValue("points", item.Quantity); // Points based on quantity
+                        cmd.Parameters.AddWithValue("points", item.Quantity); 
                         cmd.Parameters.AddWithValue("accountId", accountId);
                         cmd.ExecuteNonQuery();
                     }
@@ -267,7 +266,7 @@ namespace ClothCycles
                         cmd.Parameters.AddWithValue("craftsmanId", craftsmanId);
                         cmd.Parameters.AddWithValue("itemId", item.ItemID);
                         cmd.Parameters.AddWithValue("quantityUsed", item.Quantity);
-                        cmd.Parameters.AddWithValue("pointsAwarded", item.Quantity); // Points awarded to user
+                        cmd.Parameters.AddWithValue("pointsAwarded", item.Quantity); 
                         cmd.ExecuteNonQuery();
                     }
                 }

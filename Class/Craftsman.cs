@@ -104,5 +104,4 @@ public class Craftsman : Account
 
         UploadedProducts.Remove(product);
     }
-
 }

@@ -77,5 +77,4 @@ public class User : Account
 
         UploadedItems.Remove(item);
     }
-
 }

@@ -16,9 +16,4 @@ public class Account
         Password = password;
         Role = role;
     }
-
-    public virtual string DisplayRoleMessage()
-    {
-        return $"Welcome, {Role}!";
-    }
 }
