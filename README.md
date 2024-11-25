@@ -7,3 +7,4 @@ Anggota 1: Bagas Pujangkoro-22/496484/TK/54400 <br>
 Anggota 2: Shafa Aura Yogadiasa-22/496508/TK/54406 <br>
 
 ![ClassDiagram](https://github.com/user-attachments/assets/517c536a-22dc-44b9-9356-615398cf1a11)
+![ERD-ClothCycles pgerd](https://github.com/user-attachments/assets/86f63cae-6f2a-4b3f-9500-09cdbd950e43)
